@@ -290,3 +290,4 @@ C:\Users\drant\Documents\Peninsula RV Website\PeninsulaRV\obj\Debug\PeninsulaRV.
 C:\Users\drant\Documents\Peninsula RV Website\PeninsulaRV\obj\Debug\PeninsulaRV.csproj.GenerateResource.Cache
 C:\Users\drant\Documents\Peninsula RV Website\PeninsulaRV\obj\Debug\PeninsulaRV.dll
 C:\Users\drant\Documents\Peninsula RV Website\PeninsulaRV\obj\Debug\PeninsulaRV.pdb
+C:\Users\drant\Documents\Peninsula RV Website\PeninsulaRV\obj\Debug\PeninsulaRV.csproj.CoreCompileInputs.cache

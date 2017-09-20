@@ -8,7 +8,7 @@
         <ItemTemplate>
             <div class="row">
                 <div class="col-sm-4">
-                    <a href="#" data-toggle="modal" data-target='#modal<%# Eval("vehicleid") %>'>
+                    <a href="#" data-toggle="modal" data-target='#modal<%# Eval("consignmentid") %>'>
                         <%# Eval("modelyear") %> <%# Eval("make") %> <%# Eval("model") %>
                     </a>
                 </div>
@@ -19,7 +19,7 @@
                     <%# Eval("LastName") %>, <%# Eval("FirstName") %>
                 </div>
             </div>
-            <div class="modal fade" id="modal<%# Eval("vehicleID") %>" role="dialog">
+            <div class="modal fade" id="modal<%# Eval("consignmentID") %>" role="dialog">
                 <div class="modal-dialog modal-lg">
                     <div class="modal-content">
                         <div class="modal-header">

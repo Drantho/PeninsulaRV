@@ -193,3 +193,4 @@ C:\Users\drant\Documents\Peninsula RV Website\PeninsulaRV\obj\Release\PeninsulaR
 C:\Users\drant\Documents\Peninsula RV Website\PeninsulaRV\obj\Release\PeninsulaRV.csproj.GenerateResource.Cache
 C:\Users\drant\Documents\Peninsula RV Website\PeninsulaRV\obj\Release\PeninsulaRV.dll
 C:\Users\drant\Documents\Peninsula RV Website\PeninsulaRV\obj\Release\PeninsulaRV.pdb
+C:\Users\drant\Documents\Peninsula RV Website\PeninsulaRV\obj\Release\PeninsulaRV.csproj.CoreCompileInputs.cache

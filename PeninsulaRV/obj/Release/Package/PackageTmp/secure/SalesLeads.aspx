@@ -22,52 +22,52 @@
                 <asp:Repeater ID="rptLeads" runat="server">
                     <HeaderTemplate>
                         <div class="row">
-                            <div class="col-sm-1">
+                            <div class="col-md-1">
                                 <strong>
                                     Lead ID
                                 </strong>
                             </div>
-                            <div class="col-sm-1">
+                            <div class="col-md-1">
                                 <strong>
                                     Date
                                 </strong>
                             </div>
-                            <div class="col-sm-2">
+                            <div class="col-md-2">
                                 <strong>
                                     Status
                                 </strong>
                             </div>
-                            <div class="col-sm-1">
+                            <div class="col-md-1">
                                 <strong>
                                     Customer
                                 </strong>
                             </div>
-                            <div class="col-sm-1">
+                            <div class="col-md-1">
                                 <strong>
                                     Year(s)
                                 </strong>
                             </div>
-                            <div class="col-sm-1">
+                            <div class="col-md-1">
                                 <strong>
                                     Make(s)
                                 </strong>
                             </div>
-                            <div class="col-sm-1">
+                            <div class="col-md-1">
                                 <strong>
                                     Model(s)
                                 </strong>
                             </div>
-                            <div class="col-sm-1">
+                            <div class="col-md-1">
                                 <strong>
                                     Vehicle Types(s)
                                 </strong>
                             </div>
-                            <div class="col-sm-1">
+                            <div class="col-md-1">
                                 <strong>
                                     Min Price
                                 </strong>
                             </div>
-                            <div class="col-sm-1">
+                            <div class="col-md-1">
                                 <strong>
                                     Max Price
                                 </strong>
@@ -76,36 +76,36 @@
                     </HeaderTemplate>
                     <ItemTemplate>
                         <div class="row">
-                            <div class="col-sm-1">
+                            <div class="col-md-1">
                                 <asp:LinkButton OnCommand="btnGetResults" CommandArgument='<%# Eval("LeadID") %>' runat="server"><%# Eval("LeadID") %></asp:LinkButton>
                             </div>
-                            <div class="col-sm-1">
+                            <div class="col-md-1">
                                 <%# DataBinder.Eval(Container.DataItem, "LeadDate", "{0:MM/d/yyyy}") %>
                             </div>
-                            <div class="col-sm-2">
+                            <div class="col-md-2">
                                 <%# Eval("Status") %>
                             </div>
-                            <div class="col-sm-1">
+                            <div class="col-md-1">
                                 <%# Eval("LastName") %>, <%# Eval("FirstName") %><br />
                                 <%# Eval("PhoneNumber") %><br />
                                 <%# Eval("AltPhoneNumber") %>
                             </div>
-                            <div class="col-sm-1">
+                            <div class="col-md-1">
                                 <%# Eval("VehicleYears") %>
                             </div>
-                            <div class="col-sm-1">
+                            <div class="col-md-1">
                                 <%# Eval("VehicleMakes") %>
                             </div>
-                            <div class="col-sm-1">
+                            <div class="col-md-1">
                                 <%# Eval("VehicleModels") %>
                             </div>
-                            <div class="col-sm-1">
+                            <div class="col-md-1">
                                 <%# Eval("VehicleTypes") %>
                             </div>
-                            <div class="col-sm-1">
+                            <div class="col-md-1">
                                 <%# Eval("VehicleMinPrice", "{0:c}") %>
                             </div>
-                            <div class="col-sm-1">
+                            <div class="col-md-1">
                                 <%# Eval("VehicleMaxPrice", "{0:c}") %>
                             </div>
                         </div>
@@ -344,7 +344,7 @@
     <asp:Panel ID="pnlLeadResults" Visible="false" runat="server">
         <asp:Label ID="lblLeadInfo" runat="server" />
         <div class="row">
-            <div class="col-sm-4">
+            <div class="col-md-4">
                 <strong>Lead ID: </strong><asp:Label ID="lblLeadID" runat="server" /><br />
                 <strong>Date: </strong><asp:Label ID="lblDate" runat="server" /><br />
                 <a href="javascript:toggleDiv('divLeadStatus');"><span class="glyphicon glyphicon-edit" aria-hidden="true"></span></a><strong>Status: </strong><asp:Label ID="lblStatus" runat="server" /><br />
@@ -359,7 +359,7 @@
                 <strong>Phone: </strong><asp:Label ID="lblPhone" runat="server" /><br />
                 <strong>Email: </strong><asp:Label ID="lblEmail" runat="server" /><br />
             </div>
-            <div class="col-sm-8">
+            <div class="col-md-8">
                 <strong>Vehicle Types: </strong><asp:Label ID="lblVehicleTypes" runat="server" /><br />
                 <strong>Makes: </strong><asp:Label ID="lblMakes" runat="server" /><br />
                 <strong>Models: </strong><asp:Label ID="lblModels" runat="server" /><br />
