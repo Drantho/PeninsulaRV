@@ -1,0 +1,126 @@
+<%@ Master Language="VB" AutoEventWireup="true" %>
+<%@ Import Namespace="System.Data.SqlClient" %>
+<%@ Import Namespace="System.IO" %>
+<%@ Import Namespace="System.Collections" %>
+<%@ import Namespace="System.Configuration" %>
+        
+<script runat="server">
+
+    Sub Page_Load()
+
+        lblHeader.Text = Session("Name")
+
+    End Sub
+
+    Sub LogOut(Sender As Object, E As CommandEventArgs)
+
+        FormsAuthentication.SignOut()
+        Session.Abandon()
+
+        Dim cookie1 As HttpCookie = New HttpCookie(FormsAuthentication.FormsCookieName, "")
+        cookie1.Expires = DateTime.Now.AddYears(-1)
+        Response.Cookies.Add(cookie1)
+
+        Dim cookie2 As HttpCookie = New HttpCookie("ASP.NET_SessionId", "")
+        cookie2.Expires = DateTime.Now.AddYears(-1)
+        Response.Cookies.Add(cookie2)
+
+        FormsAuthentication.RedirectToLoginPage()
+
+        Response.Redirect("../Account/Login")
+
+
+    End Sub
+
+</script>
+    
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        
+        <!-- Latest compiled and minified CSS -->
+        <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
+
+        <!-- jQuery library -->
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
+
+        <!-- Latest compiled JavaScript -->
+        <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+        
+        <link rel="stylesheet" type="text/css" href="style.css">
+        
+        <script type="text/javascript">
+            
+            function toggleDiv(divId) {
+                
+                $("#"+divId).toggle();
+                
+            }
+            
+        </script>
+    </head>
+    <body id="mBody" runat="server">
+        <form role="form" runat="server">
+            <nav class="navbar navbar-default">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-sm-12" style="height: 80px;">
+                            <img src="Images/6265312.jpg" style="position: absolute; margin-left: auto; margin-right: auto; left: 0; right: 0; width: 120px; padding-top: 20px;">
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="navbar-header">
+                            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
+                                <span class="icon-bar"></span>
+                                <span class="icon-bar"></span>
+                                <span class="icon-bar"></span>
+                            </button>
+                            <div class="navbar-left"></div>
+                            <a class="navbar-brand" href="index.aspx">Facilities</a>
+
+                        </div>
+                        <div class="collapse navbar-collapse" id="myNavbar">
+                            <ul class="nav navbar-nav">
+                                <li><a href="downtimereport.aspx">Downtime Report</a></li>                                       
+                                <li><a href="recent.aspx">Recent</a></li>
+                                <li class="dropdown">
+                                    <a class="dropdown-toggle" data-toggle="dropdown" href="#"><span class="glyphicon glyphicon-plus" style="padding-right: 3px;"></span>Add<span class="caret"></span></a>
+                                    <ul class="dropdown-menu">
+                                        <li><a href="adddepartment.aspx"><span class="glyphicon glyphicon-plus"> Department</a></li>
+                                        <li><a href="addmachine.aspx"><span class="glyphicon glyphicon-plus"> Machine</a></li>
+                                        <li><a href="addrepair.aspx"><span class="glyphicon glyphicon-plus"> Repair</a></li>
+                                        <li><a href="addchecklist.aspx"><span class="glyphicon glyphicon-plus"> Checklist</a></li>    
+                                        <li><a href="addpart.aspx"><span class="glyphicon glyphicon-plus"> Part</a></li>
+                                        <li><a href="addsupplier.aspx"><span class="glyphicon glyphicon-plus"> Supplier</a></li>
+                                        <li><a href="addshelf.aspx"><span class="glyphicon glyphicon-plus"> Shelf</a></li>
+                                    </ul>
+                                </li>
+                                <li><a href="checklist.aspx"><span class="glyphicon glyphicon-ok" style="padding-right: 5px;"></span>List</a></li> 
+                            </ul>
+                            <ul class="nav navbar-nav navbar-right">
+                                <li><a><span class="glyphicon glyphicon-user"></span> <asp:Label id="lblHeader" runat="server"></asp:Label></a></li>
+                                <li> <asp:LinkButton OnCommand="LogOut" runat="server"><span class="glyphicon glyphicon-log-out"></span>Log Out</asp:LinkButton></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </nav>
+            
+            <div class="container container1">
+                <asp:ContentPlaceHolder ID="MainContent"  runat="server">
+                </asp:ContentPlaceHolder>
+                    
+            </div> 
+            <div class="container">
+                <footer>
+                    <br>
+                    <p style="color: white">&copy; <%: DateTime.Now.Year %> - Anthony Mitchell</p>
+                </footer>
+            </div>
+                                    
+        </form>
+    </body>
+</html>

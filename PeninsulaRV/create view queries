@@ -1,0 +1,638 @@
+	CustomerRef	VehicleRef																
+
+CustomerID	VehicleRef	WorkOrderRef	FirstName	LastName	Address	PhoneNumber	AltPhoneNumber	email	FullName	City	State	Zip	DriversLicense	MiddleName	AltIDType	AltIDNumber
+
+VehicleID	WorkOrderRef	Make	Model	ModelYear	VIN	Mileage	comments	VehicleType	CustomerRef	Service	Sale	LicenseNumber	TitledState	LienHolderName	LienHolderAddress	ActualMileage	ExcessMileage	NotActualMileage	StockNumber	Active	Sold	TabNumber	TitleNumber	Color1	Color2	Description	LienHolderID	featured
+
+Create View WorkOrderView AS
+SELECT top 100 
+WorkOrder.OrderNumber,
+WorkOrder.DateOrdered,
+WorkOrder.DateStarted,
+WorkOrder.DateCompleted,
+WorkOrder.ExemptLabor,
+WorkOrder.ExemptMaterials,
+WorkOrder.Comments As WorkOrderComments,
+WorkOrder.OrderTakenBy,
+WorkOrder.PaidDate,
+WorkOrder.Mileage AS OrderMileage,
+WorkOrder.Status,
+IsNull(Sum(MaterialView.MaterialAmount), 0.00) As MaterialTotal,
+IsNull(Sum(JobView.JobAmount), 0.00) As JobTotal,
+IsNull(Sum(Miscellaneous.MiscellaneousAmount), 0.00) As MiscellaneousTotal,
+IsNull(Sum(MaterialView.MaterialAmount), 0.00) + IsNull(Sum(JobView.JobAmount), 0.00) + IsNull(Sum(Miscellaneous.MiscellaneousAmount), 0.00)  As SubTotal,
+max(taxrate.effectivedate) as effective,
+
+IsNull(CONVERT(DECIMAL(16,2),(workorder.exemptlabor - 1) * -1 * taxrate.rate * jobview.jobamount) , 0)
++ IsNullCONVERT(DECIMAL(16,2),(workorder.exemptlabor - 1) * -1 * taxrate.rate * miscellaneous.miscellaneousamount), 0)
++ IsNull(CONVERT(DECIMAL(16,2),(workorder.exemptlabor - 1) * -1 * taxrate.rate * jobview.jobamount), 0)
+as SalesTax,
+
+IsNull(Sum(MaterialView.MaterialAmount), 0.00) 
++ IsNull(Sum(JobView.JobAmount), 0.00) 
++ IsNull(Sum(Miscellaneous.MiscellaneousAmount), 0.00) 
++ IsNull(CONVERT(DECIMAL(16,2),(workorder.exemptlabor - 1) * -1 * taxrate.rate * jobview.jobamount) , 0)
++ IsNull(CONVERT(DECIMAL(16,2),(workorder.exemptmaterials - 1) * -1 * taxrate.rate * materialview.materialamount), 0)
+
+As GrandTotalCalc,
+
+
+WorkOrder.GrandTotal,
+Customer.FirstName,
+Customer.LastName,
+Customer.Address,
+Customer.PhoneNumber,
+Customer.AltPhoneNumber,
+Customer.City,
+Customer.State,
+Customer.Zip,
+Vehicle.Make,
+Vehicle.Model,
+Vehicle.ModelYear,
+Vehicle.VIN,
+Vehicle.Mileage,
+Vehicle.comments As VehicleComments,
+Vehicle.VehicleType
+FROM WorkOrder
+INNER JOIN Vehicle
+ON WorkOrder.VehicleRef = Vehicle.VehicleID
+INNER JOIN Customer
+ON WorkOrder.CustomerRef = Customer.CustomerID
+LEFT OUTER JOIN MaterialView
+ON WorkOrder.OrderNumber = MaterialView.WorkOrderRef
+LEFT OUTER JOIN JobView
+ON WorkOrder.OrderNumber = JobView.WorkOrderRef
+LEFT OUTER JOIN Miscellaneous
+ON WorkOrder.OrderNumber = Miscellaneous.WorkOrderRef
+INNER JOIN TaxRate
+on taxrate.effectivedate < workorder.dateordered
+GROUP BY
+WorkOrder.OrderNumber,
+WorkOrder.DateOrdered,
+WorkOrder.DateStarted,
+WorkOrder.DateCompleted,
+WorkOrder.JobTotal,
+WorkOrder.MaterialsTotal,
+WorkOrder.MiscellaneousTotal,
+WorkOrder.Subtotal,
+WorkOrder.ExemptLabor,
+WorkOrder.ExemptMaterials,
+WorkOrder.SalesTax,
+WorkOrder.GrandTotal,
+WorkOrder.Comments,
+WorkOrder.OrderTakenBy,
+WorkOrder.PaidDate,
+WorkOrder.Mileage,
+WorkOrder.Status,
+Customer.FirstName,
+Customer.LastName,
+Customer.Address,
+Customer.PhoneNumber,
+Customer.AltPhoneNumber,
+Customer.City,
+Customer.State,
+Customer.Zip,
+Vehicle.Make,
+Vehicle.Model,
+Vehicle.ModelYear,
+Vehicle.VIN,
+Vehicle.Mileage,
+Vehicle.comments,
+Vehicle.VehicleType,
+TaxRate.Rate,
+JobView.JobAmount,
+MaterialView.MaterialAmount
+
+
+
+
+
+
+
+
+
+
+
+select top 150
+workorder.ordernumber,
+workorder.exemptlabor,
+workorder.exemptmaterials,
+isnull(sum(jobview.jobamount), 0) as jobtotal,
+isnull(sum(materialview.materialamount), 0) as materialtotal,
+isnull(sum(miscellaneous.miscellaneousamount), 0) as miscellaneoustotal,
+isnull(sum(jobview.jobamount), 0) +
+isnull(sum(materialview.materialamount), 0) +
+isnull(sum(miscellaneous.miscellaneousamount), 0) as subtotalcalc,
+workorder.subtotal
+from workorder
+left outer join jobview
+on workorder.ordernumber = jobview.workorderref
+left outer join materialview
+on workorder.ordernumber = materialview.workorderref
+left outer join miscellaneous
+on workorder.ordernumber = miscellaneous.workorderref
+group by 
+workorder.ordernumber,
+workorder.exemptlabor,
+workorder.exemptmaterials,
+workorder.subtotal
+order by workorder.ordernumber desc
+
+
+
+
+
+
+
+
+
+
+
+
+
+CREATE VIEW  MaterialsView AS
+SELECT 
+Select
+MaterialID,
+WorkOrderRef,
+MaterialDescription,
+MaterialQuantity,
+MaterialPrice,
+Convert(Decimal(20,2), (MaterialQuantity * MaterialPrice)) As MaterialAmount,
+Status
+FROM material
+
+
+
+select top 5
+material.materialprice,
+material.materialprice * taxrate.rate as salestax
+from material
+inner join taxrate
+on taxrate.iseffective = 1
+
+
+select top 25
+jobview.jobamount,
+if workorder.exemptlabo = 1
+(0)
+else
+(jobview.jobamount * taxrate.rate)
+As SalesTax
+from workorder
+inner join jobview
+on workorder.ordernumber = jobview.workorderref
+inner join taxrate
+on taxrate.iseffective = 1
+
+select top 25
+jobview.jobamount,
+if jobview.jobamount = 0 then
+(PRINT 'No work'); As work
+end if
+from jobview
+
+
+
+
+
+
+
+
+select top 5
+workorder.exemptlabor,
+jobview.jobamount,
+workorder.exemptlabor,
+max(taxrate.effectivedate) as effective,
+CONVERT(DECIMAL(16,2),(workorder.exemptlabor - 1) * -1 * taxrate.rate * jobview.jobamount) as SalesTax
+from workorder
+inner join jobview
+on workorder.ordernumber = jobview.workorderref
+inner join taxrate
+on taxrate.effectivedate < workorder.dateordered
+where workorder.exemptlabor = 1
+group by
+workorder.exemptlabor,
+jobview.jobamount,
+workorder.exemptlabor,
+taxrate.rate,
+jobview.jobamount
+
+
+
+
+
+
+
+
+union
+select top 5
+workorder.exemptlabor,
+jobview.jobamount,
+workorder.exemptlabor,
+max(taxrate.effectivedate) as effective,
+CONVERT(DECIMAL(16,2),(workorder.exemptlabor - 1) * -1 * taxrate.rate * jobview.jobamount) as SalesTax
+from workorder
+inner join jobview
+on workorder.ordernumber = jobview.workorderref
+inner join taxrate
+on taxrate.effectivedate < workorder.dateordered
+where workorder.exemptlabor = 0
+
+
+
+
+
+select top 25
+iif(jobview.jobamount = 0, 'nothing', 'something') as nothing
+from jobview
+
+IF ( condition ) THEN
+  statement;
+ELSE
+  statement;
+END IF;
+
+
+CREATE TABLE TaxRate
+(
+TaxRateID int IDENTITY(1,1) PRIMARY KEY,
+Title varchar(255),
+Rate Decimal(10, 4),
+IsEffective tinyint,
+Notes nvarchar(255)
+)
+
+
+insert into taxrate(Title, Rate, IsEffective, Notes) values('Sales Tax', 0.084, 1, 'This rate was effective well before listed date. Use for all retial items besides motor vehicles.')
+
+
+
+
+
+
+
+
+
+
+
+CREATE VIEW MATERIALVIEW AS
+Select
+MaterialID,
+WorkOrderRef,
+MaterialDescription,
+MaterialQuantity,
+MaterialPrice,
+Convert(Decimal(20,2), (MaterialQuantity * MaterialPrice)) As MaterialAmount,
+Status
+from material
+
+CREATE VIEW JobView AS
+Select
+JobID,
+WorkOrderRef,
+JobDescription,
+JobRate,
+JobHours,
+Convert(Decimal(20,2), (JobRate * JobHours)) As JobAmount,
+Status
+from Job
+
+JobID	WorkOrderRef	JobDescription	JobRate	JobHours	JobAmount	WorkedHoursTotal	BilledHoursTotal	PriceTotal	status	AssignedTo
+
+CREATE VIEW MiscellaneousView AS
+Select
+MiscellaneousID,
+WorkOrderRef,
+JobDescription,
+JobRate,
+Convert(Decimal(20,2), (JobRate * JobHours)) As PriceTotal,
+Status
+from Job
+
+
+
+
+Create Table MachinePart(
+MachinePartID int IDENTITY(1,1) PRIMARY KEY,
+MachineRef int,
+PartRef int,
+Notes nvarchar(4000)
+)
+
+
+
+
+ALTER TABLE WorkOrder
+ALTER COLUMN Comments nvarchar(4000)
+
+
+
+
+
+
+
+
+Create View MachinePartView As
+Select
+Machine.MachineID,
+Machine.Name As MachineName,
+IsNull(MervinPart.PartID, -1) As PartID,
+MervinPart.Name As PartName,
+MervinPart.PartNumber,
+MervinPart.Description As PartDescription
+From
+Machine
+Left Outer Join MachinePart
+On Machine.MachineID = MachinePart.MachineID
+Left Outer Join MervinPart
+On MachinePart.PartRef = MervinPart.PartID
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Select
+Max(DateOrdered) AS EndDate
+FROM WorkOrder
+Where
+Convert(Decimal(18,3), (salestax/subtotal)) = 0.082
+
+Order BY
+DateOrdered DESC
+Group By
+DateOrdered
+
+
+
+
+
+CREATE VIEW WorkOrderView AS
+SELECT
+OrderNumber,
+DateOrdered,
+IsNull(SUM(JobAmount), 0.00) AS JobTotal,
+IsNull(SUM(MaterialAmount), 0.00) AS MaterialsTotal,
+IsNull(MiscellaneousAmount, 0.00) AS MiscellaneousAmount,
+IsNull(SUM(MiscellaneousAmount), 0.00) AS MiscellaneousTotal,
+IsNull(SUM(JobAmount), 0.00) + IsNull(SUM(MaterialAmount), 0.00) + IsNull(SUM(MiscellaneousAmount), 0.00) AS SubTotal,
+Convert(Decimal(18,2),(-1 * (ExemptMaterials - 1) * IsNull(SUM(MaterialAmount), 0.00) * Rate ) +(-1 * (ExemptLabor -1) * (IsNull(SUM(JobAmount), 0.00) + IsNull(SUM(MiscellaneousAmount), 0.00)         ) * Rate)) As SalesTax,
+IsNull(SUM(JobAmount), 0.00) + IsNull(SUM(MaterialAmount), 0.00) + IsNull(SUM(MiscellaneousAmount), 0.00) + Convert(Decimal(18,2),(-1 * (ExemptMaterials - 1) * IsNull(SUM(MaterialAmount), 0.00) * Rate ) +(-1 * (ExemptLabor -1) * (IsNull(SUM(JobAmount), 0.00) + IsNull(SUM(MiscellaneousAmount), 0.00)   ) * Rate)) As GrandTotal,
+ExemptLabor,
+ExemptMaterials,
+WorkOrder.Comments,
+OrderTakenBy,
+WorkOrder.Mileage,
+CustomerID,
+LastName + ', ' + FirstName As Name,
+Address,
+City,
+State,
+Zip,
+PhoneNumber,
+AltPhoneNumber,
+VehicleID,
+ModelYear,
+Make,
+Model,
+VehicleType,
+VIN
+FROM WorkOrder
+LEFT OUTER JOIN JobView
+ON WorkOrder.OrderNumber = JobView.WorkOrderRef
+LEFT OUTER JOIN MaterialView
+ON WorkOrder.OrderNumber = MaterialView.WorkOrderRef
+LEFT OUTER JOIN Miscellaneous
+ON WorkOrder.OrderNumber = Miscellaneous.WorkOrderRef
+INNER JOIN TaxRate
+ON TaxRateID = 
+(
+SELECT TOP 1
+TaxRate.TaxRateID
+FROM TaxRate
+Where TaxRate.EffectiveDate < WorkOrder.DateOrdered
+Order By EffectiveDate
+)
+INNER JOIN Customer
+ON Customer.CustomerID = WorkOrder.CustomerRef
+LEFT OUTER JOIN Vehicle
+ON Vehicle.VehicleID = WorkOrder.VehicleRef
+GROUP BY
+OrderNumber,
+DateOrdered,
+JobTotal,
+MaterialsTotal,
+MiscellaneousTotal,
+Subtotal,
+ExemptLabor,
+ExemptMaterials,
+SalesTax,
+GrandTotal,
+WorkOrder.Comments,
+OrderTakenBy,
+PaidDate,
+WorkOrder.Mileage,
+MiscellaneousAmount,
+Rate,
+EffectiveDate,
+CustomerID,
+LastName,
+FirstName,
+Address,
+City,
+State,
+Zip,
+PhoneNumber,
+AltPhoneNumber,
+VehicleID,
+ModelYear,
+Make,
+Model,
+VehicleType,
+VIN
+
+
+
+------------------------------------------------------------------------------------------------------------------------------------------------------
+******************************************************************
+
+Create View WorkOrderView As
+SELECT
+workorder.OrderNumber,
+DateOrdered,
+workorderjobview.JobTotal,
+workordermaterialview.MaterialTotal as MaterialsTotal,
+workordermiscellaneousview.MiscellaneousTotal,
+workorderjobview.JobTotal + workordermaterialview.MaterialTotal + workordermiscellaneousview.MiscellaneousTotal As SubTotal,
+
+Convert(Decimal(18,2), (-1 * (ExemptLabor - 1) * Rate * (workorderjobview.JobTotal + workordermiscellaneousview.MiscellaneousTotal)) + (-1 * (ExemptMaterials - 1) * Rate * workordermaterialview.MaterialTotal)) As SalesTax,
+ 
+workorderjobview.JobTotal + workordermaterialview.MaterialTotal + workordermiscellaneousview.MiscellaneousTotal + Convert(Decimal(18,2), (-1 * (ExemptLabor - 1) * Rate * (workorderjobview.JobTotal + workordermiscellaneousview.MiscellaneousTotal)) + (-1 * (ExemptMaterials - 1) * Rate * workordermaterialview.MaterialTotal)) As GrandTotal,
+
+ExemptMaterials,
+ExemptLabor,
+WorkOrder.Comments,
+OrderTakenBy,
+WorkOrder.Mileage,
+CustomerID,
+LastName + ', ' + FirstName As Name,
+Address,
+City,
+State,
+Zip,
+PhoneNumber,
+AltPhoneNumber,
+VehicleID,
+ModelYear,
+Make,
+Model,
+VehicleType,
+VIN
+FROM WorkOrder
+LEFT OUTER JOIN WorkOrderJobView
+ON WorkOrder.OrderNumber = WorkOrderJobView.OrderNumber
+LEFT OUTER JOIN WorkOrderMaterialView
+ON WorkOrder.OrderNumber = WorkOrderMaterialView.OrderNumber
+LEFT OUTER JOIN workordermiscellaneousview
+ON WorkOrder.OrderNumber = workordermiscellaneousview.OrderNumber
+INNER JOIN TaxRate
+ON TaxRateID = 
+(
+SELECT TOP 1
+TaxRate.TaxRateID
+FROM TaxRate
+Where TaxRate.EffectiveDate < WorkOrder.DateOrdered
+Order By EffectiveDate
+)
+INNER JOIN Customer
+ON Customer.CustomerID = WorkOrder.CustomerRef
+LEFT OUTER JOIN Vehicle
+ON Vehicle.VehicleID = WorkOrder.VehicleRef
+GROUP BY
+workorder.OrderNumber,
+DateOrdered,
+workorderjobview.JobTotal,
+workordermaterialview.MaterialTotal,
+workordermiscellaneousview.MiscellaneousTotal,
+Subtotal,
+ExemptLabor,
+ExemptMaterials,
+SalesTax,
+GrandTotal,
+WorkOrder.Comments,
+OrderTakenBy,
+PaidDate,
+WorkOrder.Mileage,
+workordermiscellaneousview.MiscellaneousTotal,
+Rate,
+EffectiveDate,
+CustomerID,
+LastName,
+FirstName,
+Address,
+City,
+State,
+Zip,
+PhoneNumber,
+AltPhoneNumber,
+VehicleID,
+ModelYear,
+Make,
+Model,
+VehicleType,
+VIN
+
+
+
+
+
+-------------------------------------------------------------------
+
+create view workorderjobview as
+select
+ordernumber,
+IsNull(sum(jobamount), 0.00) As JobTotal
+from workorder
+left outer join jobview
+on workorder.ordernumber = jobview.workorderref
+group by
+ordernumber
+
+
+-------------------------------------------------------------------
+
+create view workordermaterialview as
+select
+ordernumber,
+IsNull(sum(materialamount), 0.00) As MaterialTotal
+from workorder
+left outer join materialview
+on workorder.ordernumber = materialview.workorderref
+group by
+ordernumber
+
+-------------------------------------------------------------------
+
+create view workordermiscellaneousview as
+select
+ordernumber,
+IsNull(sum(miscellaneousamount), 0.00) As MiscellaneousTotal
+from workorder
+left outer join miscellaneous
+on workorder.ordernumber = miscellaneous.workorderref
+group by
+ordernumber
+
+
+
+
+-------------------------------------------------------------------------
+
+
+
+
+
+
+
+select top 1 
+jobamount,
+sum(jobamount) as JobAmount,
+SUM(JobAmount) + SUM(MaterialAmount) + SUM(MiscellaneousAmount) AS SubTotal
+from workorder
+left outer join jobview
+on workorder.ordernumber = jobview.workorderref
+left outer join materialview
+on workorder.ordernumber = materialview.workorderref
+left outer join miscellaneous
+on workorder.ordernumber = miscellaneous.workorderref
+group by ordernumber, jobamount
+order by ordernumber desc

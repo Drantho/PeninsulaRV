@@ -1,0 +1,702 @@
+SELECT OBJECT_DEFINITION (OBJECT_ID('salesmancommissionview')) AS ObjectDefinition;   
+
+
+CREATE VIEW SalesmanCommissionView AS 
+SELECT 
+*, 
+(Commission - DealerCost) * CommissionPercent / 100 AS SalesmanCommission
+FROM Offerview 
+INNER JOIN Salesman 
+ON Offerview.OfferID = Salesman.OfferRef
+
+
+CREATE TABLE Offer (
+OfferID int IDENTITY(1,1) PRIMARY KEY,
+ConsignmentRef int,
+BuyerRef int,
+SalePrice decimal(10,2),
+SaleDate DateTime,
+DocumentFee decimal(10,2),
+LicenseFee decimal(10,2),
+TradeInfo varchar(255),
+TradeCredit decimal(10,2),
+TradeTaxCredit decimal(10,2),
+TaxExempt int,
+ExemptReason varchar(255),
+CashWithOrder Decimal(10,2),
+Deposit decimal(10, 2),
+SellerPaidFee decimal(10, 2),
+DealerCost decimal(10, 2),
+Salesman varchar(255),
+SalesmanCommissionPercent varchar(255),
+NewLienHolder varchar(255),
+Status varchar(255)
+)
+
+
+insert into offer(
+ConsignmentRef,
+BuyerRef,
+SalePrice,
+SaleDate,
+DocumentFee,
+LicenseFee,
+TradeInfo,
+TradeCredit,
+TradeTaxCredit,
+TaxExempt,
+ExemptReason,
+CashWithOrder,
+Deposit,
+SellerPaidFee,
+DealerCost,
+Salesman,
+SalesmanCommissionPercent,
+NewLienHolder,
+Status
+)
+values(
+2,
+251,
+21000,
+'1/26/2017',
+150,
+170.75,
+'None',
+0,
+0,
+0,
+'taxable',
+0,
+0,
+0,
+150,
+'Joe',
+'25',
+'None',
+'Test'
+)
+
+
+
+
+CREATE TABLE SaleOption (
+OptionID int IDENTITY(1,1) PRIMARY KEY,
+OfferRef int,
+Description varchar(255),
+Price decimal(10, 2)
+)
+
+insert into SaleOption(
+OfferRef,
+Description,
+Price
+)values(
+1,
+'Walk through with technician',
+0
+)
+
+CREATE TABLE Salesman (
+SalesmanID int IDENTITY(1,1) PRIMARY KEY,
+OfferRef int,
+Name varchar(255),
+CommissionPercent decimal(10, 2)
+)
+
+insert into Salesman(
+OfferRef,
+Name,
+CommissionPercent
+)values(
+2,
+'Joe',
+25
+)
+
+
+
+
+
+
+
+
+
+
+insert into consignment(VehicleRef,
+CustomerRef,
+ConsignDate,
+Term,
+AskingPrice,
+MinimumPrice,
+DealType,
+DealCalc,
+BalanceOwed,
+LienHolder,
+Status)
+values(51,51,'1/1/2017',90,20000,18000,'excess of deal', 17000, 0,'None', 'Test')
+
+
+
+
+
+
+
+
+
+Create View WorkOrderView As SELECT 
+workorder.OrderNumber, 
+DateOrdered, 
+workorderjobview.JobTotal, 
+workordermaterialview.MaterialTotal as MaterialsTotal, 
+workordermiscellaneousview.MiscellaneousTotal, 
+workorderjobview.JobTotal + workordermaterialview.MaterialTotal + workordermiscellaneousview.MiscellaneousTotal As SubTotal, 
+Convert(Decimal(18,2), (-1 * (ExemptLabor - 1) * Rate * (workorderjobview.JobTotal + workordermiscellaneousview.MiscellaneousTotal)) + (-1 * (ExemptMaterials - 1) * Rate * workordermaterialview.MaterialTotal)) As SalesTax, 
+workorderjobview.JobTotal + workordermaterialview.MaterialTotal + workordermiscellaneousview.MiscellaneousTotal + Convert(Decimal(18,2), (-1 * (ExemptLabor - 1) * Rate * (workorderjobview.JobTotal + workordermiscellaneousview.MiscellaneousTotal)) + (-1 * (ExemptMaterials - 1) * Rate * workordermaterialview.MaterialTotal)) As GrandTotal, 
+ExemptMaterials, 
+ExemptLabor, 
+WorkOrder.Comments, 
+OrderTakenBy, 
+WorkOrder.Mileage, 
+CustomerID, 
+LastName + ', ' + FirstName As Name, 
+Address, 
+City, 
+State, 
+Zip, 
+PhoneNumber, 
+AltPhoneNumber, 
+VehicleID, 
+ModelYear, 
+Make, 
+Model, 
+VehicleType, 
+VIN 
+FROM WorkOrder 
+LEFT OUTER JOIN WorkOrderJobView 
+ON WorkOrder.OrderNumber = WorkOrderJobView.OrderNumber 
+LEFT OUTER JOIN WorkOrderMaterialView 
+ON WorkOrder.OrderNumber = WorkOrderMaterialView.OrderNumber 
+LEFT OUTER JOIN workordermiscellaneousview 
+ON WorkOrder.OrderNumber = workordermiscellaneousview.OrderNumber 
+INNER JOIN TaxRate 
+ON TaxRateID = ( 
+SELECT TOP 1 TaxRate.TaxRateID 
+FROM TaxRate 
+Where TaxRate.EffectiveDate < WorkOrder.DateOrdered 
+Order By EffectiveDate 
+) 
+INNER JOIN Customer 
+ON Customer.CustomerID = WorkOrder.CustomerRef 
+LEFT OUTER JOIN Vehicle 
+ON Vehicle.VehicleID = WorkOrder.VehicleRef 
+GROUP BY 
+workorder.OrderNumber, DateOrdered, workorderjobview.JobTotal, workordermaterialview.MaterialTotal, workordermiscellaneousview.MiscellaneousTotal, Subtotal, ExemptLabor, ExemptMaterials, SalesTax, GrandTotal, WorkOrder.Comments, OrderTakenBy, PaidDate, WorkOrder.Mileage, workordermiscellaneousview.MiscellaneousTotal, Rate, EffectiveDate, CustomerID, LastName, FirstName, Address, City, State, Zip, PhoneNumber, AltPhoneNumber, VehicleID, ModelYear, Make, Model, VehicleType, VIN
+
+
+
+
+
+
+
+
+
+
+
+CREATE VIEW OfferView AS SELECT 
+OfferID,
+ConsignmentRef,
+OwnerType,
+BuyerRef,
+Buyer.LastName + ', ' + Buyer.FirstName As BuyerName,
+Buyer.City As BuyerCity,
+Buyer.State As BuyerState,
+Buyer.Zip As BuyerZip,
+Buyer.PhoneNumber As BuyerPhoneNumber,
+Buyer.AltPhoneNumber As BuyerAltPhoneNumber,
+Seller.LastName + ', ' + Seller.FirstName As SellerName,
+Seller.City As SellerCity,
+Seller.State As SellerState,
+Seller.Zip As SellerZip,
+Seller.PhoneNumber As SellerPhoneNumber,
+Seller.AltPhoneNumber As SellerAltPhoneNumber,
+Vehicle.VehicleID,
+Vehicle.Stocknumber,
+Vehicle.ModelYear,
+Vehicle.Make,
+Vehicle.Model,
+Vehicle.VehicleType,
+Case
+    WHEN VehicleType = 'Class A Motorhome'
+    THEN
+        'Motorized'
+    WHEN VehicleType = 'Class B Motorhome'
+    THEN
+        'Motorized'
+    WHEN VehicleType = 'Class C Motorhome'
+    THEN
+        'Motorized'
+    WHEN VehicleType = 'Automobile'
+    THEN
+        'Motorized'
+    ELSE
+        'Non-Motorized'
+    END AS Motorized,
+    
+Vehicle.VIN,
+Vehicle.Mileage,
+TradeInfo,
+IsNull(ExemptReason, 'Taxable') AS ExemptReason,
+NewLienHolder,
+Offer.Status AS OfferStatus,
+SalePrice,
+DocumentFee,
+LicenseFee,
+TradeCredit,
+TradeTaxCredit,
+CashWithOrder,
+Deposit,
+SellerPaidFee,
+DealerCost,
+
+Case
+    WHEN taxexempt = 1
+    THEN 
+        'TRUE'
+    ELSE
+        'FALSE'
+END As TaxExempt,
+
+SaleDate,
+
+
+isNull(Sum(SaleOption.Price), 0) AS OptionsPrice,
+
+
+isNull(Sum(SaleOption.Price), 0) + SalePrice + DocumentFee As SubTotal,
+
+
+Cast((isNull(Sum(SaleOption.Price), 0) + SalePrice + DocumentFee - TradeTaxCredit) * (taxexempt -1) * -1 * CASE
+    WHEN VehicleType = 'Class A Motorhome' or VehicleType = 'Class B Motorhome'or VehicleType = 'Class C Motorhome' or VehicleType = 'Automobile'
+        THEN Rate + 0.003 
+        ELSE Rate 
+    END AS Decimal(10,2)) As SalesTax,
+    
+    
+Cast((isNull(Sum(SaleOption.Price), 0) + SalePrice + DocumentFee - TradeTaxCredit) * (taxexempt -1) * -1 * CASE
+    WHEN VehicleType = 'Class A Motorhome' or VehicleType = 'Class B Motorhome'or VehicleType = 'Class C Motorhome' or VehicleType = 'Automobile'
+        THEN Rate + 0.003 
+        ELSE Rate 
+    END + isNull(Sum(SaleOption.Price), 0) + SalePrice + DocumentFee + licensefee AS Decimal(10,2)) As GrandTotal,
+    
+    
+Cast((isNull(Sum(SaleOption.Price), 0) + SalePrice + DocumentFee - TradeTaxCredit) * (taxexempt -1) * -1 * CASE
+    WHEN VehicleType = 'Class A Motorhome' or VehicleType = 'Class B Motorhome'or VehicleType = 'Class C Motorhome' or VehicleType = 'Automobile'
+        THEN Rate + 0.003 
+        ELSE Rate 
+    END + isNull(Sum(SaleOption.Price), 0) + SalePrice + DocumentFee + licensefee - Deposit - CashWithOrder - TradeCredit AS Decimal(10,2)) As BalanceDue,    
+    
+
+(CASE
+    WHEN VehicleType = 'Class A Motorhome' or VehicleType = 'Class B Motorhome'or VehicleType = 'Class C Motorhome' or VehicleType = 'Automobile'
+        THEN Rate + 0.003 
+        ELSE Rate 
+    END ) * ( taxexempt-1) *-1  as TaxRate, 
+    
+DealType,
+DealCalc,
+    
+Cast(CASE
+    WHEN DealType = 'Percent Deal'
+        THEN SalePrice * DealCalc / 100 
+    WHEN DealType = 'Excess of Deal'
+        THEN SalePrice - DealCalc
+    ELSE
+        DealCalc
+    END AS decimal(10,2)) As Commission,   
+
+SalePrice - isNull(SellerPaidFee, 0) - Cast(CASE
+    WHEN DealType = 'Percent Deal'
+        THEN SalePrice * DealCalc / 100 
+    WHEN DealType = 'Excess of Deal'
+        THEN SalePrice - DealCalc
+    ELSE
+        DealCalc
+    END AS decimal(10,2)) As SellerDue
+    
+    
+FROM Offer
+Inner Join ConsignmentView
+On Offer.ConsignmentRef = ConsignmentView.ConsignmentID
+INNER JOIN Customer AS Buyer
+ON Offer.BuyerRef = Buyer.CustomerID
+INNER JOIN Customer AS Seller
+ON ConsignmentView.CustomerRef = Seller.CustomerID
+Inner Join Vehicle
+ON ConsignmentView.VehicleRef = Vehicle.VehicleID
+Left Outer join SaleOption
+On Offer.OfferID = SaleOption.OfferRef
+Inner Join Taxrate
+ON TaxRateID = ( 
+SELECT TOP 1 TaxRate.TaxRateID 
+FROM TaxRate 
+Where TaxRate.EffectiveDate < SaleDate 
+Order By EffectiveDate 
+)
+Group By
+OfferID,
+ConsignmentRef,
+Vehicle.VehicleType,
+Vehicle.ModelYear,
+Vehicle.Make,
+Vehicle.Model,
+Vehicle.VIN,
+Vehicle.VehicleType,
+Vehicle.Mileage,
+Vehicle.VehicleID,
+Vehicle.Stocknumber,
+Buyer.FirstName,
+Buyer.LastName,
+Buyer.City,
+Buyer.State,
+Buyer.Zip,
+Buyer.PhoneNumber,
+Buyer.AltPhoneNumber,
+Seller.FirstName,
+Seller.LastName,
+Seller.City,
+Seller.State,
+Seller.Zip,
+Seller.PhoneNumber,
+Seller.AltPhoneNumber,
+taxrate.rate,
+BuyerRef,
+TradeInfo,
+ExemptReason,
+NewLienHolder,
+Offer.Status,
+SalePrice,
+DocumentFee,
+LicenseFee,
+TradeCredit,
+TradeTaxCredit,
+CashWithOrder,
+Deposit,
+SellerPaidFee,
+DealerCost,
+TaxExempt,
+SaleDate,
+DealType,
+DealCalc,
+OwnerType
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+CREATE TABLE Consignment (
+ConsignmentID int IDENTITY(1,1) PRIMARY KEY,
+VehicleRef int,
+CustomerRef int,
+ConsignDate DateTime,
+Term int,
+AskingPrice Decimal(10,2),
+MinimumPrice Decimal(10, 2),
+DealType varchar(255),
+DealCalc decimal(10, 2),
+BalanceOwed decimal(10,2),
+LienHolder varchar(255),
+Status varchar(255)
+)
+
+Create VIEW ConsignmentView AS SELECT
+ConsignmentID,
+VehicleRef,
+CustomerRef,
+ConsignDate,
+DateAdd(d, term, consigndate) AS ExpireDate,
+Term,
+AskingPrice,
+MinimumPrice,
+DealType,
+DealCalc,
+BalanceOwed,
+LienHolder,
+Status,
+Case
+    WHEN CustomerRef = 77
+    THEN
+        'Peninsula-Owned'
+    ELSE
+        'Consignment'
+END As OwnerType
+FROM Consignment
+
+
+Create VIEW ConsignmentVehicleView AS SELECT
+ConsignmentID,
+VehicleRef,
+Consignment.CustomerRef,
+ConsignDate,
+DateAdd(d, term, consigndate) AS ExpireDate,
+Term,
+AskingPrice,
+MinimumPrice,
+DealType,
+DealCalc,
+BalanceOwed,
+LienHolder,
+Status,
+Case
+    WHEN Consignment.CustomerRef = 77
+    THEN
+        'Peninsula-Owned'
+    ELSE
+        'Consignment'
+END As OwnerType,
+Stocknumber,
+ModelYear,
+Make,
+Model,
+VIN,
+VehicleType,
+Mileage,
+Description
+FROM Consignment
+INNER JOIN Vehicle
+ON Consignment.VehicleRef = Vehicle.VehicleID
+
+
+
+
+
+
+
+
+
+
+
+Create View SaleView As select Sale.SaleID, Sale.BuyerRef, Sale.SellerRef, Sale.VehicleRef, Sale.ConsignDate, Sale.ExpireDate, Sale.CustomerPrice, Sale.PercentDeal, Sale.FixedAmountDeal, Sale.SalePrice, Sale.GrossProfit, Sale.SalesTax, Sale.Salesman, Sale.CommissionPercent, Sale.Commission, Sale.SaleDate, Sale.DocumentFee, Sale.LicenseFee, Sale.MinimumPrice, Sale.AskingPrice, Sale.FeeAmount, Sale.ExcessOfDeal, Sale.TradeRef, Sale.TradeAllowance, Sale.TradeBalanceOwed, Sale.TradeCredit, Sale.AsIs, Sale.LimitedWarranty, Sale.OptionsDescription, Sale.OptionsPrice, Sale.OptionsTotal, Sale.SalesmanCommissionPercent, Sale.GrandTotalSale, Sale.Salesman2, Sale.Salesman3, Sale.SalesmanCommissionPercent2, Sale.SalesmanCommissionPercent3, Sale.commission2, Sale.commission3, Sale.TaxExempt, Sale.TaxExemptIDNumber1, Sale.TaxExemptIDType2, Sale.TaxExemptIDNumber2, Sale.DeliveryDate, Sale.CashWithOrder, Sale.Deposit, Sale.TotalCredit, Sale.TotalOwed, Sale.BuyerRef2, Sale.NewLienHolderName, Sale.NewLienHolderAddress, Sale.NewLienHolderID, Sale.DealerCost, Sale.BalanceOwed, Sale.Complete, Sale.SellerPaidFee, Buyer.CustomerID As BuyerID, Buyer.FirstName As BuyerFirstName, Buyer.LastName As BuyerLastName, Buyer.Address As BuyerAddress, Buyer.PhoneNumber As BuyerPhoneNumber, Buyer.AltPhoneNumber As BuyerAltPhoneNumber, Buyer.email As BuyerEmail, Buyer.City As BuyerCity, Buyer.State As BuyerState, Buyer.Zip As BuyerZip, Buyer.DriversLicense As BuyerDriversLicense, Buyer.AltIDType As BuyerAltIDType, Buyer.AltIDNumber As BuyerAltIDNumber, Seller.CustomerID As SellerID, Seller.FirstName As SellerFirstName, Seller.LastName As SellerLastName, Seller.Address As SellerAddress, Seller.PhoneNumber As SellerPhoneNumber, Seller.AltPhoneNumber As SellerAltPhoneNumber, Seller.email As SellerEmail, Seller.City As SellerCity, Seller.State As SellerState, Seller.Zip As SellerZip, Seller.DriversLicense As SellerDriversLicense, Seller.AltIDType As SellerAltIDType, Seller.AltIDNumber As SellerAltIDNumber, Vehicle.VehicleID, Vehicle.Make, Vehicle.Model, Vehicle.ModelYear, Vehicle.VIN, Vehicle.Mileage, Vehicle.comments, Vehicle.VehicleType, Vehicle.CustomerRef, Vehicle.Service, Vehicle.Sale, Vehicle.LienHolderName, Vehicle.LienHolderAddress, Vehicle.ActualMileage, Vehicle.ExcessMileage, Vehicle.NotActualMileage, Vehicle.StockNumber, Vehicle.Active, Vehicle.Sold, Vehicle.Description FROM Sale LEFT OUTER JOIN Customer As Buyer ON Sale.Buyerref = Buyer.CustomerID INNER JOIN Customer As Seller ON Sale.SellerRef = Seller.CustomerID INNER JOIN Vehicle ON Sale.VehicleRef = Vehicle.VehicleID
+
+
+
+
+
+
+
+
+
+
+Create View SaleView As select 
+Sale.SaleID, 
+Sale.BuyerRef, 
+Sale.SellerRef, 
+Sale.VehicleRef, 
+Sale.ConsignDate, 
+Sale.ExpireDate, 
+Sale.CustomerPrice, 
+Sale.PercentDeal, 
+Sale.FixedAmountDeal, 
+Sale.SalePrice, 
+Sale.GrossProfit, 
+Sale.SalesTax, 
+Sale.Salesman, 
+Sale.CommissionPercent, 
+Sale.Commission, 
+Sale.SaleDate, 
+Sale.DocumentFee, 
+Sale.LicenseFee, 
+Sale.MinimumPrice, 
+Sale.AskingPrice, 
+Sale.FeeAmount, 
+Sale.ExcessOfDeal, 
+Sale.TradeRef, 
+Sale.TradeAllowance, 
+Sale.TradeBalanceOwed, 
+Sale.TradeCredit, 
+Sale.AsIs, 
+Sale.LimitedWarranty, 
+Sale.OptionsDescription, 
+Sale.OptionsPrice, 
+Sale.OptionsTotal, 
+Sale.SalesmanCommissionPercent, 
+Sale.GrandTotalSale, 
+Sale.Salesman2, 
+Sale.Salesman3, 
+Sale.SalesmanCommissionPercent2, 
+Sale.SalesmanCommissionPercent3, 
+Sale.commission2, 
+Sale.commission3, 
+Sale.TaxExempt, 
+Sale.TaxExemptIDNumber1, 
+Sale.TaxExemptIDType2, 
+Sale.TaxExemptIDNumber2, 
+Sale.DeliveryDate, 
+Sale.CashWithOrder, 
+Sale.Deposit, 
+Sale.TotalCredit, 
+Sale.TotalOwed, 
+Sale.BuyerRef2, 
+Sale.NewLienHolderName, 
+Sale.NewLienHolderAddress, 
+Sale.NewLienHolderID, 
+Sale.DealerCost, 
+Sale.BalanceOwed, 
+Sale.Complete, 
+Sale.SellerPaidFee, 
+Buyer.CustomerID As BuyerID, 
+Buyer.FirstName As BuyerFirstName, 
+Buyer.LastName As BuyerLastName, 
+Buyer.Address As BuyerAddress, 
+Buyer.PhoneNumber As BuyerPhoneNumber, 
+Buyer.AltPhoneNumber As BuyerAltPhoneNumber, 
+Buyer.email As BuyerEmail, 
+Buyer.City As BuyerCity, 
+Buyer.State As BuyerState, 
+Buyer.Zip As BuyerZip, 
+Buyer.DriversLicense As BuyerDriversLicense, 
+Buyer.AltIDType As BuyerAltIDType, 
+Buyer.AltIDNumber As BuyerAltIDNumber, 
+Seller.CustomerID As SellerID, 
+Seller.FirstName As SellerFirstName, 
+Seller.LastName As SellerLastName, 
+Seller.Address As SellerAddress, 
+Seller.PhoneNumber As SellerPhoneNumber, 
+Seller.AltPhoneNumber As SellerAltPhoneNumber, 
+Seller.email As SellerEmail, 
+Seller.City As SellerCity, 
+Seller.State As SellerState, 
+Seller.Zip As SellerZip, 
+Seller.DriversLicense As SellerDriversLicense, 
+Seller.AltIDType As SellerAltIDType, 
+Seller.AltIDNumber As SellerAltIDNumber, 
+Vehicle.VehicleID, 
+Vehicle.Make, 
+Vehicle.Model, 
+Vehicle.ModelYear, 
+Vehicle.VIN, 
+Vehicle.Mileage, 
+Vehicle.comments, 
+Vehicle.VehicleType, 
+Vehicle.CustomerRef, 
+Vehicle.Service, 
+Vehicle.Sale, 
+Vehicle.LienHolderName, 
+Vehicle.LienHolderAddress, 
+Vehicle.ActualMileage, 
+Vehicle.ExcessMileage, 
+Vehicle.NotActualMileage, 
+Vehicle.StockNumber, 
+Vehicle.Active, 
+Vehicle.Sold, 
+Vehicle.Description 
+FROM Sale LEFT OUTER JOIN Customer As Buyer 
+ON Sale.Buyerref = Buyer.CustomerID 
+INNER JOIN Customer As Seller 
+ON Sale.SellerRef = Seller.CustomerID 
+INNER JOIN Vehicle 
+ON Sale.VehicleRef = Vehicle.VehicleID
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+CREATE TABLE Lead (
+LeadID int IDENTITY(1,1) PRIMARY KEY,
+CustomerRef int,
+LeadDate Date,
+Salesman varchar(255),
+VehicleTypes varchar(255),
+VehicleYears varchar (255),
+VehicleMakes varchar(255),
+VehicleModels varchar(255),
+VehicleMinPrice decimal(18,2),
+VehicleMaxPrice decimal(18,2),
+Notes varchar(255),
+Status varchar(255)
+)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+select
+name,
+FORMAT(PayDate,'MM-DD-YYYY'),
+grosspay,
+federal,
+fica,
+medicare,
+lniamount,
+Round(grosspay - (federal + fica + medicare + lniamount + netpay), 0) as draw,
+netpay
+from paycheck 
+where datepart('yyyy', paydate) = 2016
+order by name, paydate
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+SELECT
+*,
+Commission * CommissionPercent / 100 AS SalesmanCommission
+FROM
+Offerview
+INNER JOIN Salesman
+ON Offerview.OfferID = Salesman.OfferRef

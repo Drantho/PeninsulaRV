@@ -1,0 +1,98 @@
+﻿/* Move down content because we have a fixed navbar that is 50px tall */
+body {    
+    padding-bottom: 20px;
+    background-color: #21769e;
+}
+
+.white{
+    background-color: white;
+}
+
+.selected img {
+	opacity:0.5;
+}
+
+.navbar{
+    border-style: none;
+    padding-top: 20px !important;
+}
+
+
+
+.native {
+    -webkit-column-count: 3; /* Chrome, Safari, Opera */
+    -moz-column-count: 3; /* Firefox */
+    column-count: 3;
+    }
+
+table.mylist input {
+      width: 20px;
+      display: block;
+      float: left;
+   }
+   table.mylist label {
+      width: 200px;
+      display: block;
+      float: left;
+   }
+   table.mylist td{
+       vertical-align: top;
+       vertical-align:text-top;
+   }
+
+   input[type="text"] {
+    box-sizing: border-box;
+}
+   td{
+       vertical-align: top;
+       vertical-align: text-top;
+       padding-right: 15px;
+   }
+
+   .redButton a{
+       background-color: #d9534f !important;
+       padding: 9px !important;
+       color: white !important;
+       -moz-border-radius:5px !important; /* Firefox */
+       -webkit-border-radius: 5px !important; /* Safari, Chrome */
+       -khtml-border-radius: 5px !important; /* KHTML */
+       border-radius: 5px !important; /* CSS3 */
+}
+            
+.redbutton a:Hover{
+    background-color: #c9302c !important;
+}
+
+.col-centered{
+    float: none;
+    margin: 0 auto;
+}
+
+.card{
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+}
+
+/* Wrapping element */
+/* Set some basic padding to keep content from hitting the edges */
+.body-content {
+    padding-left: 15px;
+    padding-right: 15px;
+}
+
+/* Override the default bootstrap behavior where horizontal description lists 
+   will truncate terms that are too long to fit in the left column 
+*/
+.dl-horizontal dt {
+    white-space: normal;
+}
+
+
+/* Responsive: Portrait tablets and up */
+@media screen and (min-width: 768px) {
+    .jumbotron {
+        margin-top: 20px;
+    }
+    .body-content {
+        padding: 0;
+    }
+}
