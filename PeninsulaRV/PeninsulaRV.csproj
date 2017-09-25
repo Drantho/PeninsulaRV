@@ -25,6 +25,7 @@
     <NuGetPackageImportStamp>
     </NuGetPackageImportStamp>
     <TargetFrameworkProfile />
+    <Use64BitIISExpress />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -299,6 +300,7 @@
     <Content Include="secure\Lenders.aspx" />
     <Content Include="secure\links.aspx" />
     <Content Include="secure\Migrate.aspx" />
+    <Content Include="secure\MonthlyRevenueForm.aspx" />
     <Content Include="secure\NewWorkOrder.aspx" />
     <Content Include="secure\peninsulatools.js" />
     <Content Include="secure\PostSaleView.aspx" />
@@ -498,8 +500,11 @@
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Miscellaneous.cs" />
     <Compile Include="Models\IdentityModels.cs" />
+    <Compile Include="MonthlyRevenue.cs" />
+    <Compile Include="MyConnection.cs" />
     <Compile Include="Offer.cs" />
     <Compile Include="PostSale.cs" />
+    <Compile Include="RevenueItem.cs" />
     <Compile Include="SaleOption.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="RVType.aspx.cs">
@@ -572,6 +577,13 @@
     </Compile>
     <Compile Include="secure\Migrate.aspx.designer.cs">
       <DependentUpon>Migrate.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="secure\MonthlyRevenueForm.aspx.cs">
+      <DependentUpon>MonthlyRevenueForm.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="secure\MonthlyRevenueForm.aspx.designer.cs">
+      <DependentUpon>MonthlyRevenueForm.aspx</DependentUpon>
     </Compile>
     <Compile Include="secure\NewWorkOrder.aspx.cs">
       <DependentUpon>NewWorkOrder.aspx</DependentUpon>
