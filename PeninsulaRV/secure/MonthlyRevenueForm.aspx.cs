@@ -36,7 +36,7 @@ namespace PeninsulaRV.secure
             monthlyRevenue.Consignments = Convert.ToDecimal(txtConsignment.Text);
             monthlyRevenue.Month = Convert.ToInt16(ddlMonth.SelectedValue);
             monthlyRevenue.Motorized = Convert.ToDecimal(txtMotorized.Text);
-            monthlyRevenue.Notes = txtMotorized.Text;
+            monthlyRevenue.Notes = txtNotes.Text;
             monthlyRevenue.OutOfState = Convert.ToDecimal(txtOutOfState.Text);
             monthlyRevenue.Use = Convert.ToDecimal(txtUse.Text);
             monthlyRevenue.Year = Convert.ToInt16(ddlYear.SelectedValue);

@@ -38,11 +38,17 @@
     <asp:Panel ID="pnlMenu" runat="server">
         <asp:LinkButton OnCommand="ShowForm" runat="server"><h3>Add Month</h3></asp:LinkButton>
         <h3>View Month</h3>
-        <div>
-            <asp:RadioButtonList ID="rblMonth" runat="server" />
-            <asp:RadioButtonList ID="rblYear" runat="server" />
-            <asp:Button Text="Get Month" OnClick="GetMonth" ValidationGroup="Menu" CssClass="btn btn-default" runat="server" />
+        <div class="row">
+            <div class="col-sm-3">
+                <h4>Month</h4>
+                <asp:RadioButtonList ID="rblMonth" runat="server" />
+            </div>
+            <div class="col-sm-3">
+                <h4>Year</h4>
+                <asp:RadioButtonList ID="rblYear" runat="server" />
+            </div>
         </div>
+        <asp:Button Text="Get Month" OnClick="GetMonth" ValidationGroup="Menu" CssClass="btn btn-default" runat="server" />
     </asp:Panel>
 
     <asp:Panel ID="pnlAddMonth" Visible="false" runat="server">

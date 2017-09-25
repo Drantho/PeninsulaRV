@@ -13,7 +13,7 @@
         <a href="PurchaseOrderBackSide.aspx"><h4>Purchase Order Back Side</h4></a>
         <a href="https://secure.dol.wa.gov/home/" target="_blank"><h4>DOL</h4></a>
         <a href="Lenders.aspx" target="_blank"><h4>Lenders</h4></a>
-        <a href="monthlyrevenuefrom.aspx" target="_blank"><h4>Monthly Revenue</h4></a>
+        <a href="monthlyrevenueform.aspx" target="_blank"><h4>Monthly Revenue</h4></a>
         <a href="SQLQueryTool.aspx"><h4>SQL Tool</h4></a>
         <hr />
     </asp:Panel>
