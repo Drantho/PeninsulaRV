@@ -33,6 +33,7 @@ namespace PeninsulaRV.secure
         {
             MonthlyRevenue monthlyRevenue = new MonthlyRevenue();
             monthlyRevenue.BankDeposits = Convert.ToDecimal(txtBankDeposits.Text);
+            monthlyRevenue.Wholesale = Convert.ToDecimal(txtWholesale.Text);
             monthlyRevenue.Consignments = Convert.ToDecimal(txtConsignment.Text);
             monthlyRevenue.Month = Convert.ToInt16(ddlMonth.SelectedValue);
             monthlyRevenue.Motorized = Convert.ToDecimal(txtMotorized.Text);
