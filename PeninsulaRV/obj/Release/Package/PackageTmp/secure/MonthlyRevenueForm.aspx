@@ -9,20 +9,20 @@
 
         .itemLabel {
             display: inline-block;
-            width: 250px;
-            font-size: 14pt;
+            width: 400px;
+            font-size: 16pt;
             margin-left: 150px;
         }
 
         .amount {
             display: inline-block;
             text-align: right;
-            width: 250px;
-            font-size: 14pt;
+            width: 400px;
+            font-size: 16pt;
         }
 
         .formContainer{
-            width: 800px;
+            width: 1000px;
             margin-left: auto;
             margin-right: auto;
         }
