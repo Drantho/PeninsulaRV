@@ -243,7 +243,7 @@
                                 </tr>
                                 <tr>
                                     <td>
-                                        <strong>Document Fee: </strong>
+                                        <strong>Negotiable Document Fee: </strong>
                                     </td>
                                     <td class="text-right">
                                         <asp:Label ID="lblDocumentFee" CssClass="text-right" runat="server" />

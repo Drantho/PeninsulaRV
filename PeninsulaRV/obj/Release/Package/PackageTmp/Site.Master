@@ -24,6 +24,11 @@
 
     </script>
     <style>
+        @media print {
+            a[href]:after {
+                content: none !important;
+            }
+        }
         .navbar-brand {
             padding: 0px;
         }

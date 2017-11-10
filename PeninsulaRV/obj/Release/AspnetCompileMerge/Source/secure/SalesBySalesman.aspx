@@ -1,5 +1,13 @@
 ﻿<%@ Page Title="" Language="C#" MasterPageFile="~/Site.Master" AutoEventWireup="true" CodeBehind="SalesBySalesman.aspx.cs" Inherits="PeninsulaRV.secure.SalesBySalesman" %>
+
 <asp:Content ID="Content1" ContentPlaceHolderID="MainContent" runat="server">
+    <style>
+        @media print {
+            a[href]:after {
+                content: none !important;
+            }
+        }
+    </style>
     <asp:Panel ID="pnlSelectMonth" runat="server">
         <div class="row">
             <div class="col-sm-4">
@@ -21,7 +29,7 @@
             </div>
             <div class="col-sm-4">
                 <asp:RadioButtonList ID="rblYear" runat="server">
-                    <asp:ListItem Value="2017">2017</asp:ListItem>                    
+                    <asp:ListItem Value="2017">2017</asp:ListItem>
                 </asp:RadioButtonList>
                 <asp:RequiredFieldValidator ControlToValidate="rblYear" ErrorMessage="Select a year." CssClass="text-danger" Display="Dynamic" runat="server" />
             </div>
@@ -34,7 +42,7 @@
                 </asp:RadioButtonList>
                 <asp:RequiredFieldValidator ControlToValidate="rblSalesman" ErrorMessage="Select a salesman." CssClass="text-danger" Display="Dynamic" runat="server" />
             </div>
-        </div>        
+        </div>
         <div class="row">
             <div class="col-sm-12">
                 <asp:Button Text="GetReport" OnClick="SelectMonth" CssClass="btn btn-default" runat="server" />
@@ -43,39 +51,38 @@
     </asp:Panel>
     <asp:Panel ID="pnlReport" Visible="false" runat="server">
         <h1 class="text-center">Commission Report</h1>
-        <h2 class="text-center"><asp:Label ID="lblsalesmanName" runat="server" /> - <asp:Label ID="lblMonth" runat="server" /></h2>
+        <h2 class="text-center">
+            <asp:Label ID="lblsalesmanName" runat="server" />
+            -
+            <asp:Label ID="lblMonth" runat="server" /></h2>
         <div class="row">
             <div class="col-xs-2">
-                <strong>
-                    Sale Date
+                <strong>Sale Date
                 </strong>
             </div>
             <div class="col-xs-2">
-                <strong>
-                    Seller
+                <strong>Seller
                 </strong>
             </div>
             <div class="col-xs-2">
-                <strong>
-                    Buyer
+                <strong>Buyer
                 </strong>
             </div>
             <div class="col-xs-2">
-                <strong>
-                    Vehicle
+                <strong>Vehicle
                 </strong>
             </div>
             <div class="col-xs-2 text-right">
-                <strong>
-                    Commission
+                <strong>Commission
                 </strong>
             </div>
         </div>
         <asp:PlaceHolder ID="plhReport" runat="server" />
         <div class="row">
             <div class="col-xs-10 text-right">
-                <strong>Commission Total: </strong><asp:Label ID="lblMonthCommission" runat="server" />
+                <strong>Commission Total: </strong>
+                <asp:Label ID="lblMonthCommission" runat="server" />
             </div>
-        </div>        
+        </div>
     </asp:Panel>
 </asp:Content>
