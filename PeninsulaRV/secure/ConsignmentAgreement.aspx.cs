@@ -56,8 +56,7 @@ namespace PeninsulaRV.secure
                     connection.Close();
 
                     Vehicle newVehicle = new Vehicle();
-
-                    txtStocknumber.Text = newVehicle.GetNextStocknumber();
+                    
                 }
                 else
                 {
@@ -141,7 +140,6 @@ namespace PeninsulaRV.secure
             newVehicle.UpdateVehicle("Sold", "0");
             newVehicle.UpdateVehicle("Active", "1");
             newVehicle.UpdateVehicle("Sale", "1");
-            newVehicle.UpdateVehicle("Stocknumber", txtStocknumber.Text);
 
             ViewState["Vehicle"] = newVehicle;
             
@@ -162,7 +160,6 @@ namespace PeninsulaRV.secure
             newVehicle.VIN = txtVIN.Text;
             newVehicle.Mileage = Convert.ToInt32(txtMileage.Text);
             //newVehicle.VehicleID = newVehicle.AddVehicleToDatabase();
-            newVehicle.Stocknumber = txtStocknumber.Text;
             newVehicle.Description = txtDescription.Text;
             newVehicle.Sold = false;
             newVehicle.Active = true;
@@ -333,7 +330,6 @@ namespace PeninsulaRV.secure
             lblSaleReviewMake.Text = newVehicle.Make;
             lblSaleReviewModel.Text = newVehicle.Model;
             lblSaleReviewVIN.Text = newVehicle.VIN;
-            lblSaleReviewStocknumber.Text = newVehicle.Stocknumber;
             lblSaleReviewDescription.Text = newVehicle.Description;
             lblSaleReviewRvType.Text = newVehicle.RVType;
             lblSaleReviewMileage.Text = newVehicle.Mileage.ToString();
@@ -378,7 +374,6 @@ namespace PeninsulaRV.secure
             txtEditMake.Text = newVehicle.Make;
             txtEditModel.Text = newVehicle.Model;
             txtEditVIN.Text = newVehicle.VIN;
-            txtEditStockNumber.Text = newVehicle.Stocknumber;
             txtEditDescription.Text = newVehicle.Description;
 
             rblEditVehicleType.Items.FindByValue(newVehicle.RVType).Selected = true;
@@ -487,8 +482,7 @@ namespace PeninsulaRV.secure
 
             Vehicle newVehicle = new Vehicle();
             newVehicle.VehicleID = newConsignment.saleVehicle.VehicleID;
-
-            newVehicle.Stocknumber = txtEditStockNumber.Text;
+            
             newVehicle.ModelYear = Convert.ToInt32(txtEditModelYear.Text);
             newVehicle.Make = txtEditMake.Text;
             newVehicle.Model = txtEditModel.Text;

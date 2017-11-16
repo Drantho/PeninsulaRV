@@ -220,15 +220,7 @@
                                     <asp:RequiredFieldValidator ValidationGroup="AddVehicle" runat="server" ControlToValidate="txtMileage"
                                         CssClass="text-danger" ErrorMessage="The mileage field is required." />
                                 </div>
-                            </div>
-                            <div class="form-group">
-                                <asp:Label runat="server" AssociatedControlID="txtStocknumber" CssClass="col-md-2 control-label">Stock Number</asp:Label>
-                                <div class="col-md-10">
-                                    <asp:TextBox runat="server" ID="txtStocknumber" CssClass="form-control" />
-                                    <asp:RequiredFieldValidator ValidationGroup="AddVehicle" runat="server" ControlToValidate="txtStocknumber"
-                                        CssClass="text-danger" ErrorMessage="The stock number field is required." />
-                                </div>
-                            </div>
+                            </div>                            
                             <div class="form-group">
                                 <asp:Label runat="server" AssociatedControlID="txtDescription" CssClass="col-md-2 control-label">Description</asp:Label>
                                 <div class="col-md-10">
@@ -484,12 +476,7 @@
                     <asp:TextBox ID="txtEditVIN" CssClass="form-control" runat="server" />
                     <asp:LinkButton CommandArgument="VIN" OnCommand="UpdateVehicle" runat="server">Update VIN</asp:LinkButton>
                 </div>
-                <a href="javascript: toggleDiv('divStockNumber');"> <span class="glyphicon glyphicon-edit"></span></a>
-                <strong>Stock Number: </strong><asp:Label ID="lblSaleReviewStocknumber" runat="server" /><br />
-                <div id="divStockNumber" style="display: none">
-                    <asp:TextBox ID="txtEditStockNumber" CssClass="form-control" runat="server" />
-                    <asp:LinkButton CommandArgument="StockNumber" OnCommand="UpdateVehicle" runat="server">Update Stock Number</asp:LinkButton>
-                </div>
+                
                 
                 <asp:CheckBox ID="chkFeatured" AutoPostBack="true" OnCheckedChanged="UpdateVehicle" runat="server" /> <strong>Featured </strong><br />
 

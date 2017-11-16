@@ -220,15 +220,6 @@ namespace PeninsulaRV.secure {
         protected global::System.Web.UI.WebControls.TextBox txtMileage;
         
         /// <summary>
-        /// txtStocknumber control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txtStocknumber;
-        
-        /// <summary>
         /// txtDescription control.
         /// </summary>
         /// <remarks>
@@ -641,24 +632,6 @@ namespace PeninsulaRV.secure {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.TextBox txtEditVIN;
-        
-        /// <summary>
-        /// lblSaleReviewStocknumber control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Label lblSaleReviewStocknumber;
-        
-        /// <summary>
-        /// txtEditStockNumber control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txtEditStockNumber;
         
         /// <summary>
         /// chkFeatured control.

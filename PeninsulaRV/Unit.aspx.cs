@@ -23,8 +23,7 @@ namespace PeninsulaRV
 
             connection = new SqlConnection(ConfigurationManager.ConnectionStrings["PeninsulaRV"].ConnectionString);
 
-            //query = "SELECT vehicle.vehicleid, vehicle.stocknumber, vehicle.modelyear, vehicle.make, vehicle.model, vehicle.vehicletype, vehicle.vin, vehicle.mileage, vehicle.description, sale.askingprice FROM Vehicle inner join sale on sale.vehicleref = vehicle.vehicleid WHERE vehicle.stocknumber = @stocknumber";
-            query = "SELECT * FROM ConsignmentVehicleView WHERE stocknumber = @stocknumber";
+            query = "SELECT * FROM ConsignmentVehicleView WHERE VehicleRef = @VehicleRef";
 
             connection.Open();
 
@@ -38,7 +37,7 @@ namespace PeninsulaRV
             }
 
             command = new SqlCommand(query, connection);
-            command.Parameters.AddWithValue("@stocknumber", stocknumber);
+            command.Parameters.AddWithValue("@VehicleRef", stocknumber);
 
             reader = command.ExecuteReader();
 
@@ -47,7 +46,7 @@ namespace PeninsulaRV
             while (reader.Read())
             {
                 askingPrice = Convert.ToDecimal(reader["askingprice"]);
-                plhDetails.Controls.Add(new LiteralControl("<strong>Stock Number:</strong> " + reader["stocknumber"] + "<br>"));
+                plhDetails.Controls.Add(new LiteralControl("<strong>Stock Number:</strong> " + reader["VehicleRef"] + "<br>"));
                 plhDetails.Controls.Add(new LiteralControl("<strong>Year:</strong> " + reader["modelyear"] + "<br>"));
                 plhDetails.Controls.Add(new LiteralControl("<strong>Make:</strong> " + reader["make"] + "<br>"));
                 plhDetails.Controls.Add(new LiteralControl("<strong>Model:</strong> " + reader["model"] + "<br>"));

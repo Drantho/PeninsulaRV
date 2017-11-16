@@ -53,10 +53,10 @@ namespace PeninsulaRV
                 }
                 askingPrice = Convert.ToDecimal(reader["AskingPrice"]);
                 plhVehicleList.Controls.Add(new LiteralControl("<div class='col-sm-4'>"));
-                plhVehicleList.Controls.Add(new LiteralControl("<a href='unit.aspx?Stocknumber=" + reader["StockNumber"] + "'><img src='images/inventory/" + reader["stocknumber"] + "-thumb1.jpg'><br>"));
+                plhVehicleList.Controls.Add(new LiteralControl("<a href='unit.aspx?Stocknumber=" + reader["VehicleRef"] + "'><img src='images/inventory/" + reader["VehicleRef"] + "-thumb1.jpg'><br>"));
                 plhVehicleList.Controls.Add(new LiteralControl("<strong>" + reader["modelyear"] + " " + reader["make"] + " " + reader["model"] + "</strong></a><br>"));
                 plhVehicleList.Controls.Add(new LiteralControl("<strong>" + reader["vehicletype"] + "</strong><br>"));
-                plhVehicleList.Controls.Add(new LiteralControl("<strong>Stock Number:</strong> " + reader["stocknumber"] + "<br>"));
+                plhVehicleList.Controls.Add(new LiteralControl("<strong>Stock Number:</strong> " + reader["VehicleRef"] + "<br>"));
                 plhVehicleList.Controls.Add(new LiteralControl("<strong>VIN:</strong> " + reader["VIN"] + "<br>"));
                 if (reader["vehicletype"].ToString() == "Class A Motorhome" || reader["vehicletype"].ToString() == "Class A Motorhome" || reader["vehicletype"].ToString() == "Class C Motorhome" || reader["vehicletype"].ToString() == "Automobile")
                 {

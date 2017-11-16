@@ -185,10 +185,10 @@
             </ItemTemplate>
             </HeaderTemplate>
             <ItemTemplate>
-                <asp:LinkButton OnCommand="SelectVehicle" CommandArgument='<%# Container.DataItem("Stocknumber") %>' runat="server">
+                <asp:LinkButton OnCommand="SelectVehicle" CommandArgument='<%# Container.DataItem("VehicleID") %>' runat="server">
                     <div class="row">
                         <div class="col-xs-2">
-                            <%# Container.DataItem("Stocknumber") %>
+                            <%# Container.DataItem("VehicleID") %>
                         </div>
                         <div class="col-xs-2">
                             <%# Container.DataItem("ModelYear") %>

@@ -23,7 +23,7 @@ namespace PeninsulaRV
 
             connection = new SqlConnection(ConfigurationManager.ConnectionStrings["PeninsulaRV"].ConnectionString);
 
-            query = "SELECT *, ROW_NUMBER() OVER(ORDER BY stocknumber ASC) AS Row# FROM Consignment INNER JOIN  Vehicle ON Consignment.VehicleRef = Vehicle.VehicleID WHERE Status = 'Active' AND Featured = 1";
+            query = "SELECT *, ROW_NUMBER() OVER(ORDER BY ConsignDate ASC) AS Row# FROM Consignment INNER JOIN  Vehicle ON Consignment.VehicleRef = Vehicle.VehicleID WHERE Status = 'Active' AND Featured = 1";
 
             connection.Open();
 
@@ -61,16 +61,16 @@ namespace PeninsulaRV
                 plhFeatured1.Controls.Add(new LiteralControl("'>"));
                 
                     
-                plhFeatured1.Controls.Add(new LiteralControl("<img src='images/inventory/" + reader["stocknumber"] + "-full1.jpg' alt='Image coming soon' >"));
+                plhFeatured1.Controls.Add(new LiteralControl("<img src='images/inventory/" + reader["VehicleID"] + "-full1.jpg' alt='Image coming soon' >"));
                 plhFeatured1.Controls.Add(new LiteralControl("<div class='carousel-caption'>"));
-                plhFeatured1.Controls.Add(new LiteralControl("<a href='unit.aspx?StockNumber=" + reader["StockNumber"] + "'><h3 style='color: white'>" + reader["ModelYear"] + " " + reader["make"] + " " + reader["model"] + "</h3></a>"));
+                plhFeatured1.Controls.Add(new LiteralControl("<a href='unit.aspx?StockNumber=" + reader["VehicleID"] + "'><h3 style='color: white'>" + reader["ModelYear"] + " " + reader["make"] + " " + reader["model"] + "</h3></a>"));
                 plhFeatured1.Controls.Add(new LiteralControl("</div>"));
                 plhFeatured1.Controls.Add(new LiteralControl("</div>"));
             }
             plhFeatured1.Controls.Add(new LiteralControl("</div>"));
             reader.Close();
 
-            query = "SELECT TOP 12 * FROM Consignment INNER JOIN Vehicle ON Consignment.VehicleRef = Vehicle.VehicleID WHERE Status = 'Active' order by stocknumber desc";
+            query = "SELECT TOP 12 * FROM Consignment INNER JOIN Vehicle ON Consignment.VehicleRef = Vehicle.VehicleID WHERE Status = 'Active' order by ConsignDate desc";
             adapter = new SqlDataAdapter(query, connection);
             dataset = new DataSet();
 

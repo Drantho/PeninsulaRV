@@ -33,12 +33,12 @@
         </HeaderTemplate>
         <ItemTemplate>
             <div class="col-sm-4">
-                <a href="unit.aspx?StockNumber=<%# Eval("stocknumber") %>"><img class="img-responsive" width="100%" src="images/inventory/<%# Eval("stocknumber") %>-thumb1.jpg" alt="image coming soon." /></a>
-                <a href="unit.aspx?StockNumber=<%# Eval("stocknumber") %>">
+                <a href="unit.aspx?StockNumber=<%# Eval("VehicleID") %>"><img class="img-responsive" width="100%" src="images/inventory/<%# Eval("VehicleID") %>-thumb1.jpg" alt="image coming soon." /></a>
+                <a href="unit.aspx?StockNumber=<%# Eval("VehicleID") %>">
                     <h5><%# Eval("modelyear") %> <%# Eval("make") %> <%# Eval("model") %></h5>
                 </a>
                 <%# Eval("vehicletype") %><br />
-                Stock Number: <%# Eval("stocknumber") %><br />
+                Stock Number: <%# Eval("VehicleID") %><br />
                 VIN: <%# Eval("vin") %><br />
                 Asking Price: <%# Eval("AskingPrice", "{0:c}") %><br /><br />
             </div>
