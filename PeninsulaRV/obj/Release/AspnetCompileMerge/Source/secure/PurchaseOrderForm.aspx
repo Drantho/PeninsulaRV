@@ -14,7 +14,6 @@
     <style>
         body {
             vertical-align: text-top;
-            font-size: 200%;
         }
 
         th {
@@ -25,10 +24,12 @@
             vertical-align: top;
             padding-left: 10px;
             padding-right: 10px;
+            font-size: 8pt;
         }
 
         h1 {
             text-align: center;
+            font-size: 16pt;
         }
 
         table {
@@ -51,13 +52,11 @@
         h4 {
             margin-top: 0px;
             margin-bottom: 0px;
+            font-size: 12pt;
         }
-
-        h1 {
-            margin-bottom: 5px;
-            margin-top: 10px;
+        h5 {
+            font-size: 8pt;
         }
-
         .underline {
             border-bottom: solid;
         }
@@ -67,7 +66,6 @@
         }
 
         .head {
-            font-size: 125%;
         }
     </style>
 </head>
@@ -91,11 +89,11 @@
                     peninsularv@gmail.com
                 </div>
             </div>
-            <div class="panel">
+            <div class="panel" style="margin: -15px 0 0 0;">
                 <div class="panel-heading">
                     <h1><asp:Label ID="lblStatus" runat="server" /></h1>
                 </div>
-                <div class="panel-body">
+                <div class="panel-body" style="margin: -20px 0 0 0;">
                     <div class="row">
                         <div class="col-xs-4 head">
                             <strong>Purchaser: </strong><br />
@@ -111,7 +109,7 @@
 
             <div class="row">
                 <div class="col-xs-12">
-                    <div class="panel panel-default">
+                    <div class="panel panel-default" style="margin: -10px 0 0 0; padding: 0px 0px 0px 0px;">
                         <div class="panel-heading">
                             <h4>As Is No Warranty</h4>
                         </div>
@@ -125,9 +123,9 @@
             </div>
             <div class="row">
                 <div class="col-xs-12">
-                    <div class="panel panel-default">
+                    <div class="panel panel-default" style="margin: -25px 0 0 0;">
                         <div class="panel-heading">
-                            <h4>Contractual Disclosure</h4>
+                            <h4 style="margin: 10px 0 0 0;">Contractual Disclosure</h4>
                         </div>
                         <div class="panel-body">
                             <p style="font-size: 11pt">
@@ -138,8 +136,8 @@
                 </div>
             </div>
             <div class="row">
-                <div class="col-xs-4">
-                    <div class="panel panel-default">
+                <div class="col-xs-4" style="margin-left: 0px; margin-right: 0px; padding-right: 0px;">
+                    <div class="panel panel-default" style="margin-left: 0px; margin-right: 0px; padding-left: 0px; padding-right: 0px;">
                         <div class="panel-heading">
                             <h4>Sale Information</h4>
                         </div>
@@ -172,8 +170,8 @@
                     </div>
                 </div>
 
-                <div class="col-xs-4">
-                    <div class="panel panel-default">
+                <div class="col-xs-4" style="margin-left: 0px; margin-right: 0px; padding-left: 0px; padding-right: 0px;">
+                    <div class="panel panel-default" style="margin-left: 0px; margin-right: 0px; padding-left: 0px; padding-right: 0px;">
                         <div class="panel-heading">
                             <h4>Credit Information</h4>
                         </div>
@@ -226,13 +224,13 @@
                     </div>
                 </div>
 
-                <div class="col-xs-4">
-                    <div class="panel panel-default">
+                <div class="col-xs-4" style="margin-left: 0px; margin-right: 0px; padding-left: 0px;">
+                    <div class="panel panel-default" style="margin-left: 0px; margin-right: 0px; padding-left: 0px; padding-right: 0px;">
                         <div class="panel-heading">
                             <h4>Totals</h4>
                         </div>
                         <div class="panel-body">
-                            <table>
+                            <table style="margin-left: -15px;">
                                 <tr>
                                     <td>
                                         <strong>Subtotal: </strong>
@@ -243,7 +241,7 @@
                                 </tr>
                                 <tr>
                                     <td>
-                                        <strong>Negotiable Document Fee: </strong>
+                                        <strong>Negotiable&nbsp;Document&nbsp;Fee: </strong>
                                     </td>
                                     <td class="text-right">
                                         <asp:Label ID="lblDocumentFee" CssClass="text-right" runat="server" />
@@ -297,7 +295,7 @@
 
             <div class="row">
                 <div class="col-xs-12">
-                    <div class="panel panel-default">
+                    <div class="panel panel-default" style="margin: -30px 0 0 0;">
                         <div class="panel-heading">
                             <h4>Legal Information</h4>
                         </div>
@@ -324,10 +322,10 @@ services which are paid for by the manufacturer.
                     </div>
                 </div>
                 <div class="col-xs-3">
-                    <h4>Date&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Dealer Signature:</h4>
+                    <h5>Date&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Dealer Signature:</h5>
                 </div>
                 <div class="col-xs-9">
-                    <h4>Date&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Purchaser(s) Signature:</h4>
+                    <h5>Date&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Purchaser(s) Signature:</h5>
                 </div>
             </div>
 

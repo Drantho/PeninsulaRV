@@ -17,9 +17,7 @@ namespace PeninsulaRV.secure
 
                 rblMonth.DataSource = lists.Months();
                 rblMonth.DataBind();
-
-                rblYear.DataSource = lists.Years();
-                rblYear.DataBind();
+                
             }            
         }
 

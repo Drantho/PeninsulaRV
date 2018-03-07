@@ -45,7 +45,15 @@
             </div>
             <div class="col-sm-3">
                 <h4>Year</h4>
-                <asp:RadioButtonList ID="rblYear" runat="server" />
+                <asp:RadioButtonList ID="rblYear" runat="server">
+                    <asp:ListItem Value="2012">2012</asp:ListItem>
+                    <asp:ListItem Value="2013">2013</asp:ListItem>
+                    <asp:ListItem Value="2014">2014</asp:ListItem>
+                    <asp:ListItem Value="2015">2015</asp:ListItem>
+                    <asp:ListItem Value="2016">2016</asp:ListItem>
+                    <asp:ListItem Value="2017">2017</asp:ListItem>
+                    <asp:ListItem Value="2018">2018</asp:ListItem>
+                </asp:RadioButtonList>
             </div>
         </div>
         <asp:Button Text="Get Month" OnClick="GetMonth" ValidationGroup="Menu" CssClass="btn btn-default" runat="server" />
@@ -83,6 +91,7 @@
                     <asp:ListItem Text="2015" Value="2015" />
                     <asp:ListItem Text="2016" Value="2016" />
                     <asp:ListItem Text="2017" Value="2017" />
+                    <asp:ListItem Text="2018" Value="2018" />
                 </asp:DropDownList>
                 <asp:RequiredFieldValidator ValidationGroup="AddMonth" runat="server" ControlToValidate="ddlYear"
                     CssClass="text-danger" ErrorMessage="The year field is required." />

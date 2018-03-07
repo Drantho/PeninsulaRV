@@ -35,6 +35,7 @@ namespace PeninsulaRV
                     minusTaxFree -= item.Amount;
                 }
                 minusTaxFree -= OutOfState;
+                minusTaxFree -= Wholesale;
                 return minusTaxFree;
             }
         }

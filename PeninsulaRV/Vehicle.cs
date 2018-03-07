@@ -213,11 +213,11 @@ namespace PeninsulaRV
 
             if(Stocknumber == null)
             {
-                query = "UPDATE Vehicle SET ModelYear = @ModelYear, Make = @Make, Model = @Model, VIN = @VIN, VehicleType = @VehicleType, Mileage = @Mileage WHERE VehicleID = @VehicleID";
+                query = "UPDATE Vehicle SET ModelYear = @ModelYear, Make = @Make, Model = @Model, VIN = @VIN, VehicleType = @VehicleType, Mileage = @Mileage, featured = @featured, Description = @Description WHERE VehicleID = @VehicleID";
             }
             else
             {
-                query = "UPDATE Vehicle SET StockNumber = @StockNumber, ModelYear = @ModelYear, Make = @Make, Model = @Model, VIN = @VIN, VehicleType = @VehicleType, Mileage = @Mileage, featured = @featured WHERE VehicleID = @VehicleID";
+                query = "UPDATE Vehicle SET StockNumber = @StockNumber, ModelYear = @ModelYear, Make = @Make, Model = @Model, VIN = @VIN, VehicleType = @VehicleType, Mileage = @Mileage, featured = @featured, Description = @Description WHERE VehicleID = @VehicleID";
             }
             
 
@@ -238,6 +238,15 @@ namespace PeninsulaRV
             command.Parameters.AddWithValue("@Mileage", Mileage);
             command.Parameters.AddWithValue("@Featured", Featured);
             command.Parameters.AddWithValue("@VehicleID", VehicleID);
+            command.Parameters.AddWithValue("@Description", Description);
+
+            foreach(SqlParameter parameter in command.Parameters)
+            {
+                if(parameter.Value == null)
+                {
+                    parameter.Value = DBNull.Value;
+                }
+            }
 
             command.ExecuteNonQuery();
 

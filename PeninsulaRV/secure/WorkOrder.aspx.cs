@@ -246,6 +246,7 @@ namespace PeninsulaRV.secure
             pnlWorkOder.Visible = false;
             pnlSelectCustomer.Visible = false;
             pnlReview.Visible = true;
+            Session["OrderNumber"] = e.CommandArgument.ToString();
         }
 
         protected void SelectWorkOrder(object sender, EventArgs e)
@@ -384,7 +385,27 @@ namespace PeninsulaRV.secure
             plhReview.Controls.Add(new LiteralControl("</tr>"));
             plhReview.Controls.Add(new LiteralControl("<tr>"));
             plhReview.Controls.Add(new LiteralControl("<td><strong>Date Ordered:</strong></td>"));
-            plhReview.Controls.Add(new LiteralControl("<td align='right'>" + workOderInfo.DateOrdered.ToString("d") + "</td>"));            
+            plhReview.Controls.Add(new LiteralControl("<td align='right'><a href=\"javascript: toggleDivs('UpdateDate'); \"><span class='glyphicon glyphicon-pencil' aria-hidden='true'></span></a> " + workOderInfo.DateOrdered.ToString("d")));
+
+            plhReview.Controls.Add(new LiteralControl("<div style='display: none' id='divUpdateDate'>"));
+
+            TextBox txtEditDateOrdered = new TextBox
+            {
+                ID = "txtUpdateDateOrdered",
+                Text = workOderInfo.DateOrdered.ToShortDateString(),
+                CssClass = "form-control"
+            };
+            plhReview.Controls.Add(txtEditDateOrdered);
+
+            LinkButton lbnEditDateOrdered = new LinkButton
+            {
+                Text = "update date ordered"
+            };
+            lbnEditDateOrdered.Command += new CommandEventHandler(UpdateDateOrdered);
+            plhReview.Controls.Add(lbnEditDateOrdered);
+            plhReview.Controls.Add(new LiteralControl("</div>"));
+
+            plhReview.Controls.Add(new LiteralControl("</td>"));
             plhReview.Controls.Add(new LiteralControl("<tr>"));
             plhReview.Controls.Add(new LiteralControl("<td><strong>Mileage:</strong></td>"));
             plhReview.Controls.Add(new LiteralControl("<td align='right'>" + workOderInfo.Mileage + "</td>"));
@@ -400,11 +421,17 @@ namespace PeninsulaRV.secure
             plhReview.Controls.Add(new LiteralControl("</tr>"));
             plhReview.Controls.Add(new LiteralControl("<tr>"));
             plhReview.Controls.Add(new LiteralControl("<td><strong>Materials Tax Exempt:</strong></td>"));
-            plhReview.Controls.Add(new LiteralControl("<td align='right'>" + workOderInfo.ExemptMaterial.ToString() + "</td>"));
+            plhReview.Controls.Add(new LiteralControl("<td align='right'>" + workOderInfo.ExemptMaterial.ToString() + "<br>"));
+            
+            pnlReview.Controls.Add(new LiteralControl("</td>"));
+
             plhReview.Controls.Add(new LiteralControl("</tr>"));
             plhReview.Controls.Add(new LiteralControl("<tr>"));
             plhReview.Controls.Add(new LiteralControl("<td><strong>Labor Tax Exempt:</strong></td>"));
-            plhReview.Controls.Add(new LiteralControl("<td align='right'>" + workOderInfo.ExemptLabor.ToString() + "</td>"));
+            plhReview.Controls.Add(new LiteralControl("<td align='right'>" + workOderInfo.ExemptLabor.ToString() + "<br>"));
+           
+            plhReview.Controls.Add(new LiteralControl("</td>"));
+
             plhReview.Controls.Add(new LiteralControl("</tr>"));
             plhReview.Controls.Add(new LiteralControl("<tr>"));
             plhReview.Controls.Add(new LiteralControl("<td colspan=2><hr></td>"));
@@ -1084,7 +1111,49 @@ namespace PeninsulaRV.secure
                 
             }
             
+        }
 
+        protected void UpdateDateOrdered(object sender, CommandEventArgs e)
+        {
+            TextBox textBox = plhReview.FindControl("txtUpdateDateOrdered") as TextBox;
+
+            WorkOrderInfo workOrderInfo = new WorkOrderInfo(hdnOrderNumber.Value);
+
+            workOrderInfo.DateOrdered = Convert.ToDateTime(textBox.Text);
+
+            workOrderInfo.UpdateWOrkOrder();
+
+            Response.Redirect("WorkOrder.aspx?OrderNumber=" + hdnOrderNumber.Value);
+        }
+
+        protected void SetExemptMaterials(object sender, EventArgs e)
+        {
+            WorkOrderInfo workOderInfo = new WorkOrderInfo();
+
+            workOderInfo = workOderInfo.GetWorkOrderInfo(hdnOrderNumber.Value.ToString());
+
+            CheckBox checkBox = new CheckBox();
+
+            checkBox = pnlReview.FindControl("cbMaterialsExempt") as CheckBox;
+
+            workOderInfo.ExemptMaterial = checkBox.Checked;
+
+            workOderInfo.UpdateWOrkOrder();
+        }
+
+        protected void SetExemptLabor(object sender, EventArgs e)
+        {
+            WorkOrderInfo workOderInfo = new WorkOrderInfo();
+
+            workOderInfo = workOderInfo.GetWorkOrderInfo(hdnOrderNumber.Value.ToString());
+
+            CheckBox checkBox = new CheckBox();
+
+            checkBox = pnlReview.FindControl("cbLaborExempt") as CheckBox;
+
+            workOderInfo.ExemptLabor = checkBox.Checked;
+
+            workOderInfo.UpdateWOrkOrder();
         }
     }
 }

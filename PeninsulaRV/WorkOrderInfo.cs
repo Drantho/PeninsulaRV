@@ -181,7 +181,73 @@ namespace PeninsulaRV
         {
             get { return grandTotal; }
             set { grandTotal = value; }
-        }        
+        }
+
+        public WorkOrderInfo() { }
+
+        public WorkOrderInfo(string orderNumber)
+        {
+            SqlConnection connection;
+            SqlCommand command;
+                SqlDataReader reader;
+                string query;
+
+                connection = new SqlConnection(ConfigurationManager.ConnectionStrings["PeninsulaRV"].ConnectionString);
+
+                query = "SELECT * FROM WorkOrderView WHERE OrderNumber = @OrderNumber";
+
+                connection.Open();
+
+                command = new SqlCommand(query, connection);
+                command.Parameters.AddWithValue("@OrderNumber", orderNumber);
+
+                reader = command.ExecuteReader();
+
+                OrderNumber = orderNumber;
+
+                while (reader.Read())
+                {
+                    CustomerName = reader["Name"].ToString();
+                    CustomerAddress = reader["Address"].ToString();
+                    CustomerCity = reader["City"].ToString();
+                    CustomerState = reader["State"].ToString();
+                    CustomerZip = reader["Zip"].ToString();
+                    CustomerPhone = reader["PhoneNumber"].ToString();
+                    CustomerAltPhone = reader["AltPhoneNumber"].ToString();
+                    try
+                    {
+                        Mileage = Convert.ToInt32(reader["Mileage"]);
+                    }
+                    catch
+                    {
+                        Mileage = 0;
+                    }
+
+                    VehicleInfo = reader["ModelYear"] + " " + reader["Make"] + " " + reader["Model"];
+                    VehicleType = reader["VehicleType"].ToString();
+                    VehicleVin = reader["VIN"].ToString();
+                    try
+                    {
+                        Mileage = Convert.ToInt32(reader["Mileage"]);
+                    }
+                    catch
+                    {
+                        Mileage = 0;
+                    }
+
+                    JobTotal = Convert.ToDecimal(reader["JobTotal"]);
+                    MaterialTotal = Convert.ToDecimal(reader["MaterialsTotal"]);
+                    MiscellaneousTotal = Convert.ToDecimal(reader["MiscellaneousTotal"]);
+                    ExemptLabor = Convert.ToBoolean(reader["ExemptLabor"]);
+                    ExemptMaterial = Convert.ToBoolean(reader["ExemptMaterials"]);
+                    DateOrdered = Convert.ToDateTime(reader["DateOrdered"]);
+                    TakenBy = reader["OrderTakenBy"].ToString();
+                    SalesTax = Convert.ToDecimal(reader["SalesTax"]);
+                    GrandTotal = Convert.ToDecimal(reader["GrandTotal"]);
+                }
+
+                connection.Close();
+        }
         
         public string AddWorkOrderToDatabase()
         {
@@ -218,7 +284,7 @@ namespace PeninsulaRV
 
             connection = new SqlConnection(ConfigurationManager.ConnectionStrings["PeninsulaRV"].ConnectionString);
 
-            query = "UPDATE WorkOrder SET Mileage = @Mileage, JobTotal = @JobTotal, MaterialsTotal = @MaterialTotal, MiscellaneousTotal = @MiscellaneousTotal, SubTotal = @SubTotal, SalesTax = @SalesTax, GrandTotal = @GrandTotal WHERE OrderNumber = @OrderNumber";
+            query = "UPDATE WorkOrder SET Mileage = @Mileage, JobTotal = @JobTotal, MaterialsTotal = @MaterialTotal, MiscellaneousTotal = @MiscellaneousTotal, SubTotal = @SubTotal, SalesTax = @SalesTax, GrandTotal = @GrandTotal, ExemptLabor = @ExemptLabor, ExemptMaterials = @ExemptMaterials, DateOrdered = @DateOrdered WHERE OrderNumber = @OrderNumber";
 
             connection.Open();
             command = new SqlCommand(query, connection);
@@ -229,6 +295,9 @@ namespace PeninsulaRV
             command.Parameters.AddWithValue("@SubTotal", SubTotal);
             command.Parameters.AddWithValue("@SalesTax", SalesTax);
             command.Parameters.AddWithValue("@GrandTotal", GrandTotal);
+            command.Parameters.AddWithValue("@ExemptLabor", ExemptLabor);
+            command.Parameters.AddWithValue("@ExemptMaterials", ExemptMaterial);
+            command.Parameters.AddWithValue("@DateOrdered", DateOrdered);
             command.Parameters.AddWithValue("@OrderNumber", OrderNumber);
 
             command.ExecuteScalar();

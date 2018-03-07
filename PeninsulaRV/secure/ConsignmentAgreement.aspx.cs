@@ -213,9 +213,6 @@ namespace PeninsulaRV.secure
 
             hlkPrint.NavigateUrl = "ConsignmentAgreementForm.aspx?SaleID=" + hdnSaleID.Value;
             
-
-
-
             Consignment newConsignment = new Consignment();
 
             newConsignment = newConsignment.GetConsignment(rblConsignments.SelectedItem.Value);
@@ -233,7 +230,6 @@ namespace PeninsulaRV.secure
 
         protected void AddConsignment(object sender, EventArgs e)
         {
-
             Vehicle newVehicle = new Vehicle();
             newVehicle = ViewState["Vehicle"] as Vehicle;
 
@@ -268,7 +264,8 @@ namespace PeninsulaRV.secure
             newConsignment.DealCalc = Convert.ToDecimal(txtDealCalc.Text);
             newConsignment.Term = Convert.ToInt16(txtTerm.Text);
 
-            hdnSaleID.Value = newConsignment.AddConsignmentToDatabase();
+            newConsignment.consignmentID = newConsignment.AddConsignmentToDatabase();
+            hdnSaleID.Value = newConsignment.consignmentID;
             hlkPrint.NavigateUrl = "ConsignmentAgreementForm.aspx?SaleID=" + hdnSaleID.Value;
             ViewState["Consignment"] = newConsignment;
 
@@ -490,6 +487,7 @@ namespace PeninsulaRV.secure
             newVehicle.RVType = rblEditVehicleType.SelectedItem.Text;
             newVehicle.Mileage = Convert.ToInt32(txtEditMileage.Text);
             newVehicle.Featured = chkFeatured.Checked;
+            newVehicle.Description = txtEditDescription.Text;
 
             newVehicle.UpdateAll();
             newConsignment = newConsignment.GetConsignment(newConsignment.ConsignmentID);
